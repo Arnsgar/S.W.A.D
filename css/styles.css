@@ -1,0 +1,95 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  /* Se elimina el degradado de fondo para usar el video */
+  color: #333;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Video de fondo */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Contenedor principal dividido en dos columnas */
+.login-container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+  z-index: 2;
+}
+
+/* Caja de login (lado izquierdo) */
+.login-box {
+  width: 30%; /* Puedes ajustar este valor */
+  background: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+  padding: 30px;
+  border-radius: 20px;
+  margin: 110px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+
+/* Logo principal */
+.logo {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+/* Contenedor del input de contraseña */
+.password-container {
+  position: relative;
+}
+
+/* Botón para ver/ocultar contraseña */
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  font-size: 18px;
+}
+
+/* Ajustes para los inputs */
+input.form-control {
+  font-size: 15px;
+  padding: 10px;
+}
+
+/* Estilos del botón de envío */
+.btn-primary {
+  font-size: 16px;
+  padding: 10px;
+}
+.login-image {
+  position: relative;
+  width: 50%; /* Ajusta según necesites */
+  /* Si deseas, puedes definir un color de fondo o dejarlo transparente */
+}
+
+/* Pseudo-elemento para la imagen */
+.login-image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 100%;
+  background: url('../img/logo2.png') no-repeat center center;
+  background-size: cover;
+  opacity: 90%; /* Ajusta la transparencia de la imagen */
+  pointer-events: none; /* Para que no interfiera con la interacción */
+  z-index: -1; /* Se coloca detrás del contenido, si es necesario */
+}

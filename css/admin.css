@@ -1,0 +1,86 @@
+/* Estilos generales para el panel de administración */
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal con sidebar y contenido */
+.admin-container {
+  display: flex;
+}
+
+/* Sidebar: menú lateral */
+.sidebar {
+  width: 250px;
+  background: #333;
+  color: white;
+  padding: 20px;
+  height: calc(100vh - 70px); /* Ajustar según la altura del navbar */
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 10px;
+  transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+  background: #444;
+}
+
+/* Área de contenido principal */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Tarjetas (cards) */
+.card {
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: white;
+  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+}
+
+/* Formularios y botones */
+input.form-control, select.form-select {
+  margin-bottom: 10px;
+}
+
+.btn {
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Tablas */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+/* Mensajes de validación */
+#clienteMsg,
+#plantillaMsg {
+  font-weight: bold;
+}

@@ -1,0 +1,48 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Navbar personalizado */
+  .navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Iconos interactivos para el dashboard */
+  .icon-dashboard {
+    font-size: 3rem;
+    color: #0d6efd;
+  }
+  
+  /* Efecto hover en las tarjetas */
+  .hover-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .hover-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Ajustes para las tarjetas */
+  .card {
+    border: none;
+    border-radius: 10px;
+  }
+  
+  /* Botones dentro de las tarjetas */
+  .card .btn {
+    margin-top: 10px;
+  }
+  
+  /* Opcional: Ajuste en la tipografía de títulos y textos */
+  h2, .card-title {
+    font-weight: bold;
+  }
+  
+  .card-text {
+    font-size: 0.9rem;
+  }
+  

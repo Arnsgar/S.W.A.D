@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Docente</title>
+  <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/docentes.css">
+  <script defer src="../js/docente.js"></script>
+</head>
+<body>
+
+  <!-- Barra lateral de navegación -->
+  <nav class="sidebar">
+    <h2 id="nombreDocente">Docente</h2>
+    <ul>
+      <li><a href="#" onclick="mostrarSeccion('añadirEstudiantes')">Añadir Estudiantes</a></li>
+      <li><a href="#" onclick="mostrarSeccion('progresoEstudiantes')">Ver Progreso</a></li>
+      <li><a href="#" onclick="mostrarSeccion('directrices')">Añadir Directrices</a></li>
+      <li><a href="#" onclick="mostrarSeccion('notas')">Añadir Notas</a></li>
+      <li><a href="#" onclick="mostrarSeccion('citaciones')">Citaciones</a></li>
+      <li><a href="#" onclick="mostrarSeccion('observaciones')">Observaciones</a></li>
+      <li><a href="#" onclick="logout()">Cerrar Sesión</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenedor Principal -->
+  <main class="content">
+    <section id="añadirEstudiantes" class="seccion">
+      <h2>Añadir Estudiantes</h2>
+      <form id="formEstudiante">
+        <input type="text" id="nombre" placeholder="Nombre del estudiante" required>
+        <input type="text" id="grado" placeholder="Grado o curso" required>
+        <button type="submit">Agregar</button>
+      </form>
+      <div id="listaEstudiantes"></div>
+    </section>
+
+    <section id="progresoEstudiantes" class="seccion" style="display:none;">
+      <h2>Progreso de Estudiantes</h2>
+      <table>
+        <tr>
+          <th>Estudiante</th>
+          <th>Progreso</th>
+        </tr>
+        <tbody id="tablaProgreso"></tbody>
+      </table>
+    </section>
+
+    <section id="directrices" class="seccion" style="display:none;">
+      <h2>Añadir Directrices</h2>
+      <textarea id="nuevaDirectriz" placeholder="Escribe una directriz..."></textarea>
+      <button onclick="guardarDirectriz()">Guardar</button>
+      <ul id="listaDirectrices"></ul>
+    </section>
+
+    <section id="notas" class="seccion" style="display:none;">
+      <h2>Añadir Notas</h2>
+      <input type="text" id="notaEstudiante" placeholder="Estudiante">
+      <input type="number" id="notaValor" placeholder="Nota">
+      <button onclick="guardarNota()">Guardar Nota</button>
+      <ul id="listaNotas"></ul>
+    </section>
+
+    <section id="citaciones" class="seccion" style="display:none;">
+      <h2>Citaciones</h2>
+      <p>Gestión de citaciones para estudiantes.</p>
+    </section>
+
+    <section id="observaciones" class="seccion" style="display:none;">
+      <h2>Observaciones</h2>
+      <p>Registrar observaciones de estudiantes.</p>
+    </section>
+  </main>
+
+</body>
+</html>

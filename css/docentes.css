@@ -1,0 +1,68 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  /* Barra lateral */
+  .sidebar {
+    width: 250px;
+    background: #333;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+  }
+  
+  .sidebar h2 {
+    text-align: center;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin: 20px 0;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s;
+  }
+  
+  .sidebar ul li a:hover {
+    background: #444;
+  }
+  
+  /* Contenido principal */
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Secciones ocultas */
+  .seccion {
+    display: none;
+  }
+  
+  .seccion h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+  }
+  
+  #formEstudiante input,
+  #notaEstudiante,
+  #notaValor,
+  #nuevaDirectriz {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+  }
+  
