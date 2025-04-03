@@ -98,6 +98,33 @@ if (loginForm) {
 
 
 */
+document.getElementById("loginForm").addEventListener("submit",async function (event) {
+
+  event.preventDefault();
+
+    const formData = new FormData(this);
+    const errorMsg = document.getElementById("error-msg");
+
+    try {
+        let response = await fetch("../backend/login.php", {
+            method: "POST",
+            body: formData
+        });
+
+        let data = await response.json();
+
+        if (data.success) {
+            window.location.href = data.redirect;
+        } else {
+            errorMsg.innerText = data.message;
+        }
+    } catch (error) {
+        errorMsg.innerText = "Error en el servidor. Inténtalo más tarde.";
+    }
+});
+
+
+
 
 // Evento para "Olvidé mi contraseña"
 const forgotPasswordLink = document.getElementById("forgotPassword");
