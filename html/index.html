@@ -21,21 +21,21 @@
     <div class="login-box">
       <img src="../img/logo2.png" alt="Logo" class="logo">
       <h2>Bienvenido a SWAD</h2>
-      <form id="loginForm">
+      <form id="loginForm" action="../backend/login.php" method="POST">
         <div class="mb-3">
-          <input type="text" id="usuario" class="form-control" placeholder="Usuario" required>
+          <input type="text" id="usuario" name="user" class="form-control" placeholder="Usuario" required>
         </div>
         <div class="mb-3 password-container">
-          <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
           <span class="toggle-password" onclick="togglePassword()">👁️</span>
         </div>
         <div class="mb-3">
           <label for="tipoUsuario">Seleccionar Rol:</label>
-          <select id="tipoUsuario" class="form-control">
+          <select id="tipoUsuario" name="userType" class="form-control">
             <option value="docente">Docente</option>
             <option value="estudiante">Estudiante</option>
             <option value="admin">Administrador</option>
-            <option value="cliente">Usuario</option>
+            <option value="cliente">Instituto</option>
           </select>
         </div>
         <div class="form-check mb-3">

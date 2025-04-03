@@ -3,7 +3,7 @@
 $host = 'localhost';
 $user = 'root'; // Usuario por defecto de XAMPP
 $password = ''; // Contraseña por defecto de XAMPP (vacía)
-$database = 'registro'; // Nombre de la base de datos
+$database = 'swad'; // Nombre de la base de datos
 
 try{
     $pdo=new PDO("mysql:host=$host;dbname=$database;charset=utf8",$user,$password);

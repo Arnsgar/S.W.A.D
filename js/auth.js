@@ -1,4 +1,10 @@
+
+/*
+
+
 // Obtener intentos y tiempo de bloqueo desde localStorage
+
+
 let intentos = localStorage.getItem("intentos") ? parseInt(localStorage.getItem("intentos")) : 0;
 let bloqueoHasta = localStorage.getItem("bloqueoHasta") ? parseInt(localStorage.getItem("bloqueoHasta")) : null;
 
@@ -36,6 +42,8 @@ function bloquearUsuario() {
     document.getElementById("error-msg").innerText = "";
   }, tiempoRestante);
 }
+
+
 
 // Agregar listener al formulario de login
 const loginForm = document.getElementById("loginForm");
@@ -87,6 +95,9 @@ if (loginForm) {
     }
   });
 }
+
+
+*/
 
 // Evento para "Olvidé mi contraseña"
 const forgotPasswordLink = document.getElementById("forgotPassword");

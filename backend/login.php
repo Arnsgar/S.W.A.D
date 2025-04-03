@@ -5,23 +5,51 @@ include "bd.php";
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 $user=$_POST["user"];
 $password=$_POST["password"];
+$rol=strtolower($_POST["userType"]);
 
-//Verificar que el usuario exista en la BD
+$roles_permitidos=["administrador", "docente", "estudiante", "instituto"]
 
-$sql="SELECT* FROM docentes WHERE usuario=? LIMIT=1";
-$stmt=$pdo->prepare($sql);
-$stmt->execute([$user]);
-$docente=stmt->fetch(PDO::FETCH_ASSC);
 
-//verificar si se encontro el usuario
-if($docente){
-    if($password==$docente["contraseña"]){
-        $_SESSION["user"]=$profesores["usuario"];
-        $_SESSION["id"]=$profesor["id_profesor"]
-    } 
+// verifica que el tipo elejido
+if(in_array($rol,$roles_permitidos)){
+
+    $sql="SELECT* FROM $rol WHERE usuario=? LIMIT 1";
+    $stmt=$pdo->prepare($sql);
+    $stmt->execute([$user]);
+
+    $usuario=stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($usuario && password_verify($password, $usuario["contraseña"])) {
+        $_SESSION["user"] = $usuario["usuario"];
+        $_SESSION["id"] = $usuario["id"];
+        $_SESSION["role"] = $role;
+
+        // Redirección basada en rol
+        switch ($role) {
+            case "administrador":
+                header("Location: ../html/admin.html");
+                break;
+            case "docente":
+                header("Location: ../html/docentes.html");
+                break;
+            case "estudiante":
+                header("Location: ../html/estudiantes.html");
+                break;
+            case "instituto":
+                header("Location: ../html/cliente.html");
+                break;
+        }
+        exit();
+    } else {
+        echo "Usuario o contraseña incorrectos.";
+    }
+} else {
+    echo "Rol no válido.";
+}
 }
 
-}
+
+
 
 
 ?>
