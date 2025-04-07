@@ -50,48 +50,83 @@
 
     <!-- Área de contenido (secciones dinámicas) -->
     <main class="content">
-      <!-- Sección: Crear Cliente -->
       <section id="crearCliente" class="seccion">
         <h2>Crear Nuevo Cliente</h2>
         <form id="clienteForm">
           <div class="row g-3">
+            <!-- Información de la Institución -->
             <div class="col-md-6">
-              <input type="text" id="clienteNombres" class="form-control" placeholder="Nombres" required>
+              <input type="text" id="nombre_instituto" class="form-control" placeholder="Nombre de la Institución" required>
             </div>
             <div class="col-md-6">
-              <input type="text" id="clienteApellidos" class="form-control" placeholder="Apellidos" required>
+              <input type="text" id="direccion" class="form-control" placeholder="Dirección" required>
             </div>
-            <div class="col-md-4">
-              <select id="tipoDocumento" class="form-select" required>
-                <option value="" selected disabled>Tipo de Documento</option>
-                <option value="CC">Cédula de Ciudadanía</option>
-                <option value="CE">Cédula de Extranjería</option>
-                <option value="PT">Permiso Temporal</option>
+            <div class="col-md-6">
+              <input type="text" id="telefono" class="form-control" placeholder="Teléfono" required>
+            </div>
+            <div class="col-md-6">
+              <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico" required>
+            </div>
+      
+            <!-- Información del Rector -->
+            <div class="col-md-6">
+              <input type="text" id="nombre_rector" class="form-control" placeholder="Nombre del Rector" required>
+            </div>
+            <div class="col-md-6">
+              <input type="text" id="apellidos" class="form-control" placeholder="Apellidos del Rector" required>
+            </div>
+            <div class="col-md-6">
+              <select id="tipo_documento" class="form-select" required>
+                <option value="" selected disabled>Tipo de Documento del Rector</option>
+                <option value="cedula">Cédula</option>
+                <option value="tarjeta_identidad">Tarjeta de Identidad</option>
+                <option value="pasaporte">Pasaporte</option>
               </select>
             </div>
-            <div class="col-md-4">
-              <input type="date" id="fechaNacimiento" class="form-control" required>
+            <div class="col-md-6">
+              <input type="text" id="doc_rector" class="form-control" placeholder="Número de Documento del Rector" required maxlength="30">
             </div>
-            <div class="col-md-4">
-              <input type="text" id="numeroDocumento" class="form-control" placeholder="Número de Documento" required maxlength="15" pattern="[A-Za-z0-9]+">
+      
+            <!-- Datos de Usuario -->
+            <div class="col-md-6">
+              <input type="text" id="usuario" class="form-control" placeholder="Nombre de Usuario" required maxlength="50">
             </div>
             <div class="col-md-6">
-              <input type="email" id="clienteCorreo" class="form-control" placeholder="Correo Electrónico" required>
+              <input type="password" id="contrasena" class="form-control" placeholder="Contraseña" required>
+            </div>
+      
+            <!-- Código de Registro -->
+            <div class="col-md-6">
+              <select id="tipo_codigo" name="tipo_codigo" class="form-select" required>
+                <option value="" disabled selected>Tipo de Código de Registro</option>
+                <option value="snies">SNIES</option>
+                <option value="nit">NIT</option>
+                <option value="clfes">CLFES</option>
+                <option value="rut">RUT</option>
+                <option value="otro">Otro</option>
+              </select>
             </div>
             <div class="col-md-6">
-              <input type="text" id="clienteUsuario" class="form-control" placeholder="Usuario" required>
+              <input type="text" id="codigo" name="codigo" class="form-control" placeholder="Código de Identificación" required maxlength="20">
             </div>
-            <div class="col-md-6">
-              <input type="password" id="clienteContrasena" class="form-control" placeholder="Contraseña" required>
-            </div>
-            <div class="col-md-6">
-              <input type="text" id="nombreEmpresa" class="form-control" placeholder="Nombre de la Empresa" required>
+      
+            <!-- Firma del Rector con Canvas -->
+            <div class="col-md-12">
+              <label for="firmaCanvas" class="form-label">Firma del Rector (dibuje aquí)</label>
+              <canvas id="firmaCanvas" width="400" height="150" style="border:1px solid #ccc; display: block;"></canvas>
+              <div class="mt-2">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="borrarFirma()">Borrar Firma</button>
+              </div>
+              <!-- Campo oculto para guardar la firma en base64 -->
+              <input type="hidden" id="firmaBase64" name="firmaBase64" required>
             </div>
           </div>
+      
           <button type="submit" class="btn btn-primary mt-3">Crear Cliente</button>
           <p id="clienteMsg" class="mt-2"></p>
         </form>
       </section>
+      
 
       <!-- Sección: Buscar Cliente -->
       <section id="buscarCliente" class="seccion" style="display: none;">
