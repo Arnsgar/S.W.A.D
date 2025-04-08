@@ -1,4 +1,7 @@
 // Verificar si hay una sesión activa
+
+
+/*
 document.addEventListener("DOMContentLoaded", function () {
   let user = localStorage.getItem("user");
   let role = localStorage.getItem("rol"); // Se corrige el nombre de la clave
@@ -13,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("nombreEstudiante").innerText = user;
   }
 });
+*/
+
 
 // Simulación de cursos certificados y progreso
 const cursosCertificados = [

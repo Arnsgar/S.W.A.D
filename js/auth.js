@@ -155,11 +155,11 @@ if (forgotPasswordLink) {
 }
 
 // Función para cerrar sesión (accesible globalmente)
-function logout() {
+/*function logout() {
   localStorage.removeItem("user");
   localStorage.removeItem("rol");
   window.location.href = "index.html";
-}
+}*/
 
 // Función para alternar la visibilidad de la contraseña (accesible globalmente)
 function togglePassword() {
