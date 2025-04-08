@@ -13,10 +13,10 @@ function mostrarListadoClientes() {
       <td>${cliente.nombres}</td>
       <td>${cliente.apellidos}</td>
       <td>${cliente.tipoDocumento} ${cliente.numeroDocumento}</td>
-      <td>${cliente.fechaNacimiento}</td>
       <td>${cliente.correo}</td>
       <td>${cliente.usuario}</td>
       <td>${cliente.empresa}</td>
+      <td>${cliente.firma}</td>
       <td>
         <button class="btn btn-danger btn-sm" onclick="eliminarCliente(${cliente.id})">
           <i class="bi bi-trash"></i>
@@ -30,18 +30,19 @@ function mostrarListadoClientes() {
 // Función para crear un nuevo cliente
 document.getElementById("clienteForm").addEventListener("submit", function(event) {
   event.preventDefault();
-  const nombres = document.getElementById("clienteNombres").value.trim();
-  const apellidos = document.getElementById("clienteApellidos").value.trim();
-  const tipoDocumento = document.getElementById("tipoDocumento").value;
-  const fechaNacimiento = document.getElementById("fechaNacimiento").value;
-  const numeroDocumento = document.getElementById("numeroDocumento").value.trim();
-  const correo = document.getElementById("clienteCorreo").value.trim();
-  const usuario = document.getElementById("clienteUsuario").value.trim();
-  const contrasena = document.getElementById("clienteContrasena").value;
-  const empresa = document.getElementById("nombreEmpresa").value.trim();
+
+  const nombres = document.getElementById("nombre_rector").value.trim();
+  const apellidos = document.getElementById("apellidos").value.trim();
+  const tipoDocumento = document.getElementById("tipo_documento").value;
+  const numeroDocumento = document.getElementById("doc_rector").value.trim();
+  const correo = document.getElementById("correo").value.trim();
+  const usuario = document.getElementById("usuario").value.trim();
+  const contrasena = document.getElementById("contrasena").value;
+  const empresa = document.getElementById("nombre_instituto").value.trim();
+  const firma = document.getElementById("firma_rector").value.trim();
   const mensaje = document.getElementById("clienteMsg");
 
-  // Validar que no exista ya un cliente con el mismo ID o correo o usuario
+  // Validación de duplicados
   if (clientes.some(c => c.correo === correo || c.usuario === usuario)) {
     mensaje.innerText = "El cliente ya existe.";
     mensaje.style.color = "red";
@@ -53,12 +54,12 @@ document.getElementById("clienteForm").addEventListener("submit", function(event
     nombres,
     apellidos,
     tipoDocumento,
-    fechaNacimiento,
     numeroDocumento,
     correo,
     usuario,
     contrasena,
-    empresa
+    empresa,
+    firma
   };
 
   clientes.push(nuevoCliente);
@@ -76,36 +77,77 @@ document.getElementById("buscarForm").addEventListener("submit", function(event)
   const idBusqueda = parseInt(document.getElementById("buscarId").value);
   const resultado = document.getElementById("resultadoBusqueda");
   const cliente = clientes.find(c => c.id === idBusqueda);
+
   if (cliente) {
     resultado.innerHTML = `
       <p><strong>ID:</strong> ${cliente.id}</p>
-      <p><strong>Nombres:</strong> ${cliente.nombres}</p>
-      <p><strong>Apellidos:</strong> ${cliente.apellidos}</p>
+      <p><strong>Nombre:</strong> ${cliente.nombres} ${cliente.apellidos}</p>
       <p><strong>Documento:</strong> ${cliente.tipoDocumento} ${cliente.numeroDocumento}</p>
-      <p><strong>Fecha de Nacimiento:</strong> ${cliente.fechaNacimiento}</p>
       <p><strong>Correo:</strong> ${cliente.correo}</p>
       <p><strong>Usuario:</strong> ${cliente.usuario}</p>
-      <p><strong>Empresa:</strong> ${cliente.empresa}</p>
+      <p><strong>Institución:</strong> ${cliente.empresa}</p>
+      <p><strong>Firma:</strong> ${cliente.firma}</p>
     `;
   } else {
     resultado.innerHTML = "<p>Cliente no encontrado.</p>";
   }
 });
 
-// Función para eliminar un cliente por ID
+// Función para eliminar un cliente
 function eliminarCliente(id) {
   clientes = clientes.filter(c => c.id !== id);
   localStorage.setItem("clientes", JSON.stringify(clientes));
   mostrarListadoClientes();
 }
 
-// Mostrar la lista de clientes al cargar la sección "Listado de Clientes"
+// Mostrar la lista de clientes al cargar
 document.addEventListener("DOMContentLoaded", function () {
-  // Se asume que se mostrará el listado cuando se seleccione la sección correspondiente
   mostrarListadoClientes();
 });
 
-// Función para cambiar entre secciones en el panel (para el menú lateral)
+// Función para mostrar la sección de firma
+
+const canvas = document.getElementById("firmaCanvas");
+const firmaImagen = document.getElementById("firmaImagen");
+const ctx = canvas.getContext("2d");
+
+let dibujando = false;
+
+canvas.addEventListener("mousedown", e => {
+  dibujando = true;
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX, e.offsetY);
+});
+
+canvas.addEventListener("mousemove", e => {
+  if (dibujando) {
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+  }
+});
+
+canvas.addEventListener("mouseup", () => {
+  dibujando = false;
+  guardarFirma();
+});
+
+canvas.addEventListener("mouseleave", () => {
+  dibujando = false;
+  guardarFirma();
+});
+
+function borrarFirma() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  firmaImagen.value = ""; // limpiar también el valor oculto
+}
+
+function guardarFirma() {
+  const imagen = canvas.toDataURL("image/png");
+  firmaImagen.value = imagen;
+}
+
+
+// Función para mostrar secciones
 function mostrarSeccion(id) {
   document.querySelectorAll(".seccion").forEach(seccion => {
     seccion.style.display = "none";
