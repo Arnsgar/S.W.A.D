@@ -1,3 +1,10 @@
+.error {
+  color: red;
+  font-size: 0.85em;
+  margin-top: -10px;   /* Súbelo más cerca del input */
+  display: block;
+}
+
 /* Estilos generales para el panel de administración */
 body {
   font-family: Arial, sans-serif;

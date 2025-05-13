@@ -8,7 +8,7 @@ $database = 'swad'; // Nombre de la base de datos
 try{
     $pdo=new PDO("mysql:host=$host;dbname=$database;charset=utf8",$user,$password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-   # echo "Conexión exitosa a la base de datos 'swad'";
+   // echo "Conexión exitosa a la base de datos 'swad'";
 }catch(PDOException $e){
     echo "Error de conexión: " . $e->getMessage();
     // echo "Error de conexión: ".$e->getMessage();

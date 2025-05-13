@@ -46,9 +46,10 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
     if ($usuario && password_verify($password, $usuario["contraseña"])) {
         $_SESSION["user"] = $usuario["usuario"];
-        $_SESSION["id"] = $usuario["id"];
         $_SESSION["rol"] = $rol;
-
+             if ($rol === "administrador") {
+                 $_SESSION["id_administrador"] = $usuario["id_administrador"]; // 🟢 Guarda el ID en sesión
+             }
         $_SESSION["intentos"]=0;
         $_SESSION["bloqueo_hasta"]=null;    
 

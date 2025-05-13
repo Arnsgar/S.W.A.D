@@ -1,0 +1,9 @@
+Se hizo una petición
+Se hizo una petición
+Se hizo una petición
+Se hizo una petición
+Datos recibidos: {"institute_name":"dasd","address":"Cl 17A   5-52","phone":"3212306926","email":"sandovaldelgadoa@cglv.edu.co","rector_name":"Andres Felipe","rector_surname":"Delgado","document_type":"3","document_number":"134123123","username":"adsdasdasda","password":"Sandoval123123123","code_type":"nit","code":"dasd","firmaBase64":""}
+Se hizo una petición
+Datos recibidos: {"institute_name":"dasd","address":"Cl 17A   5-52","phone":"3212306926","email":"sandovaldelgadoa@cglv.edu.co","rector_name":"Andres Felipe","rector_surname":"Delgado","document_type":"1","document_number":"141324123","username":"dasda","password":"Sandoval123123","code_type":"snies","code":"asdasd","firmaBase64":""}
+Se hizo una petición
+Datos recibidos: {"institute_name":"dasd","address":"Cl 17A   5-52","phone":"3212306926","email":"sandovaldelgadoa@cglv.edu.co","rector_name":"Andres Felipe","rector_surname":"Delgado","document_type":"4","document_number":"123123123","username":"dsadasd","password":"Sandoval123","code_type":"snies","code":"adsasd","firmaBase64":""}

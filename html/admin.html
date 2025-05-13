@@ -52,62 +52,83 @@
     <main class="content">
       <section id="crearCliente" class="seccion">
         <h2>Crear Nuevo Cliente</h2>
-        <form id="clienteForm">
+        <form id="clienteForm" action="../backend/admin.php" method="POST" >
           <div class="row g-3">
             <!-- Información de la Institución -->
             <div class="col-md-6">
-              <input type="text" id="nombre_instituto" class="form-control" placeholder="Nombre de la Institución" required>
+              <input type="text" id="nombre_instituto" name="institute_name" class="form-control" placeholder="Nombre de la Institución" required>
+              <div class="error" id="error_nombre_instituto">error</div>
+            </div>
+            
+
+            <div class="col-md-6">
+              <input type="text" id="direccion" name="address" class="form-control" placeholder="Dirección" required>
+              <div class="error" id="error_direccion">error</div>
             </div>
             <div class="col-md-6">
-              <input type="text" id="direccion" class="form-control" placeholder="Dirección" required>
+              <input type="text" id="telefono" name="phone" class="form-control" placeholder="Teléfono" required>
+              <div class="error" id="error_telefono">error</div>
             </div>
             <div class="col-md-6">
-              <input type="text" id="telefono" class="form-control" placeholder="Teléfono" required>
+              <input type="email" id="correo" name="email" class="form-control" placeholder="Correo Electrónico" required>
+              <div class="error" id="error_correo">error</div>
             </div>
-            <div class="col-md-6">
-              <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico" required>
-            </div>
-      
+
             <!-- Información del Rector -->
             <div class="col-md-6">
-              <input type="text" id="nombre_rector" class="form-control" placeholder="Nombre del Rector" required>
+              <input type="text" id="nombre_rector" name="rector_name" class="form-control" placeholder="Nombre del Rector" required>
+              <div class="error" id="error_nombre_rector">error</div>
             </div>
             <div class="col-md-6">
-              <input type="text" id="apellidos" class="form-control" placeholder="Apellidos del Rector" required>
+              <input type="text" id="apellidos" name="rector_surname" class="form-control" placeholder="Apellidos del Rector" required>
+              <div class="error" id="error_apellidos">error</div>
             </div>
             <div class="col-md-6">
-              <select id="tipo_documento" class="form-select" required>
+              <select id="tipo_documento" name="document_type" class="form-select" required>
                 <option value="" selected disabled>Tipo de Documento del Rector</option>
-                <option value="cedula">Cédula</option>
-                <option value="tarjeta_identidad">Tarjeta de Identidad</option>
-                <option value="pasaporte">Pasaporte</option>
+                <option value="1">Cédula de Ciudadania</option>
+                <option value="2">Tarjeta de Identidad</option>
+                <option value="3">Cédula de Extranjería</option>
+                <option value="4">Pasaporte</option>
+                <option value="5">Documento nacional de identificacion</option>
+                <option value="6">Permiso especial de permanencia</option>
+                <option value="7">Registro civil de nacimiento</option>
+                <option value="8">Licencia de conduccion</option>
+                <option value="9">Numero de identificacion tributaria</option>
+                <option value="10">Otro</option>
               </select>
+              <div class="error" id="error_tipo_documento">error</div>
             </div>
             <div class="col-md-6">
-              <input type="text" id="doc_rector" class="form-control" placeholder="Número de Documento del Rector" required maxlength="30">
+              <input type="text" id="doc_rector" name="document_number" class="form-control" placeholder="Número de Documento del Rector" required maxlength="30">
+              <div class="error" id="error_doc_rector">error</div>
             </div>
       
             <!-- Datos de Usuario -->
             <div class="col-md-6">
-              <input type="text" id="usuario" class="form-control" placeholder="Nombre de Usuario" required maxlength="50">
+              <input type="text" id="usuario" name="username" class="form-control" placeholder="Nombre de Usuario" required maxlength="50">
+              <div class="error" id="error_usuario">error</div>
             </div>
             <div class="col-md-6">
-              <input type="password" id="contrasena" class="form-control" placeholder="Contraseña" required>
+              <input type="password" id="contrasena" name="password" class="form-control" placeholder="Contraseña" required>
+              <div class="error" id="error_contrasena">error</div>
             </div>
-      
+
             <!-- Código de Registro -->
             <div class="col-md-6">
-              <select id="tipo_codigo" name="tipo_codigo" class="form-select" required>
+              <select id="tipo_codigo" name="code_type" class="form-select" required>
                 <option value="" disabled selected>Tipo de Código de Registro</option>
                 <option value="snies">SNIES</option>
                 <option value="nit">NIT</option>
-                <option value="clfes">CLFES</option>
+                <option value="icfes">ICFES</option>
                 <option value="rut">RUT</option>
                 <option value="otro">Otro</option>
               </select>
+              <div class="error" id="error_tipo_codigo">error</div>
             </div>
             <div class="col-md-6">
-              <input type="text" id="codigo" name="codigo" class="form-control" placeholder="Código de Identificación" required maxlength="20">
+              <input type="text" id="codigo" name="code" class="form-control" placeholder="Código de Identificación" required maxlength="20">
+            <div class="error" id="error_codigo">error</div>
             </div>
       
             <!-- Firma del Rector con Canvas -->
@@ -119,6 +140,7 @@
               </div>
               <!-- Campo oculto para guardar la firma en base64 -->
               <input type="hidden" id="firmaBase64" name="firmaBase64" required>
+
             </div>
           </div>
       
@@ -184,6 +206,6 @@
   <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
   <!-- Scripts de administración -->
   <script src="../js/admin.js"></script>
-  <script src="../js/auth.js"></script>
+  
 </body>
 </html>
