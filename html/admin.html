@@ -133,7 +133,7 @@
       
             <!-- Firma del Rector con Canvas -->
             <div class="col-md-12">
-              <label for="firmaCanvas" class="form-label">Firma del Rector (dibuje aquí)</label>
+              <label for="firmaCanvas" class="form-label">Firma del Rector (dibuje aquí)   </label> <div class="error" id="error_firma_rector">error </div>
               <canvas id="firmaCanvas" width="400" height="150" style="border:1px solid #ccc; display: block;"></canvas>
               <div class="mt-2">
                 <button type="button" class="btn btn-secondary btn-sm" onclick="borrarFirma()">Borrar Firma</button>
@@ -144,7 +144,7 @@
             </div>
           </div>
       
-          <button type="submit" class="btn btn-primary mt-3">Crear Cliente</button>
+          <button type="submit" class="btn btn-primary mt-3" id="btnEnviar">Crear Cliente</button>
           <p id="clienteMsg" class="mt-2"></p>
         </form>
       </section>
@@ -206,6 +206,42 @@
   <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
   <!-- Scripts de administración -->
   <script src="../js/admin.js"></script>
-  
+  <!-- Script para buscar cliente en backend -->
+  <script>
+    document.getElementById('buscarForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const idBusqueda = document.getElementById('buscarId').value;
+      const resultadoDiv = document.getElementById('resultadoBusqueda');
+
+      fetch(`../backend/buscar_cliente.php?id=${encodeURIComponent(idBusqueda)}`)
+        .then(response => {
+          if (!response.ok) throw new Error("HTTP status " + response.status);
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            const cliente = data.instituto;
+            resultadoDiv.innerHTML = `
+              <div class="card mt-3">
+                <div class="card-body">
+                  <h5 class="card-title">${cliente.nombre_instituto}</h5>
+                  <p class="card-text"><strong>ID:</strong> ${cliente.id_instituto}</p>
+                  <p class="card-text"><strong>Dirección:</strong> ${cliente.direccion}</p>
+                  <p class="card-text"><strong>Teléfono:</strong> ${cliente.telefono}</p>
+                  <p class="card-text"><strong>Correo:</strong> ${cliente.correo}</p>
+                  <p class="card-text"><strong>Rector:</strong> ${cliente.nombre} ${cliente.apellidos}</p>
+                </div>
+              </div>
+            `;
+          } else {
+            resultadoDiv.innerHTML = `<p>No se encontró el cliente.</p>`;
+          }
+        })
+        .catch(error => {
+          resultadoDiv.innerHTML = `<p>Error al buscar el cliente.</p>`;
+          console.error("Error en fetch:", error);
+        });
+    });
+  </script>
 </body>
 </html>

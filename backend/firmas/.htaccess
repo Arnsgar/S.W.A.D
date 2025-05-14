@@ -1,0 +1,7 @@
+# Permitir acceso a imágenes en esta carpeta
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+Options +Indexes
+Allow from all
