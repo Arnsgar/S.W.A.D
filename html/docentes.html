@@ -39,15 +39,30 @@
             <input type="text" id="apellido" class="form-control" placeholder="Apellido" required>
           </div>
           <div class="col-md-6">
-            <input type="date" id="fecha_nacimiento" class="form-control" placeholder="Fecha de nacimiento" required>
+            <select id="id_tipodoc" class="form-select" required>
+              <option value="" disabled selected>Tipo de documento</option>
+              <option value="1">Registro Civil (RC)</option>
+              <option value="2">Tarjeta de Identidad (TI)</option>
+              <option value="3">Cédula de Ciudadanía (CC)</option>
+              <option value="4">Tarjeta de Extranjería (TE)</option>
+              <option value="5">Cédula de Extranjería (CE)</option>
+              <option value="6">Número de Identificación Tributaria (NIT)</option>
+              <option value="7">Pasaporte (PP)</option>
+              <option value="8">Permiso Especial de Permanencia (PEP)</option>
+            </select>
           </div>
           <div class="col-md-6">
-            <select id="sexo" class="form-select" required>
+            <input type="text" id="num_documento" class="form-control" placeholder="Número de documento" required>
+          </div>
+          <div class="col-md-6">
+            <select id="sexo_nacimiento" class="form-select" required>
               <option value="" disabled selected>Sexo</option>
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-              <option value="O">Otro</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
             </select>
+          </div>
+          <div class="col-md-6">
+            <input type="date" id="fecha_nacimiento" class="form-control" placeholder="Fecha de nacimiento" required>
           </div>
           <div class="col-md-6">
             <input type="text" id="nacionalidad" class="form-control" placeholder="Nacionalidad" required>
@@ -59,7 +74,19 @@
             <input type="text" id="municipio" class="form-control" placeholder="Municipio" required>
           </div>
           <div class="col-md-6">
-            <input type="text" id="lugar_residencia" class="form-control" placeholder="Lugar de residencia" required>
+            <input type="text" id="direccion_residencia" class="form-control" placeholder="Dirección de residencia" required>
+          </div>
+          <div class="col-md-6">
+            <input type="email" id="correo" class="form-control" placeholder="Correo electrónico" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="telefono" class="form-control" placeholder="Teléfono" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="usuario" class="form-control" placeholder="Usuario" required>
+          </div>
+          <div class="col-md-6">
+            <input type="password" id="contrasena" class="form-control" placeholder="Contraseña" required>
           </div>
           <div class="col-md-6">
             <select id="nivel_estudios" class="form-select" required>
@@ -82,28 +109,24 @@
               placeholder="Institución de procedencia" required>
           </div>
           <div class="col-md-6">
-            <input type="number" id="anio_graduacion" class="form-control" placeholder="Año de graduación" min="1900"
-              max="2100">
+            <input type="number" id="año_graduacion" class="form-control" placeholder="Año de graduación" min="1900" max="2100" required>
           </div>
           <div class="col-md-6">
-            <select id="programa" class="form-select" required>
+            <select id="id_programa" class="form-select" required>
               <option value="" disabled selected>Programa al que se inscribe</option>
-              <option
-                value="Licenciatura en Educación Básica con énfasis en Matemáticas, Humanidades y Lengua Castellana">
-                Licenciatura en Educación Básica con énfasis en Matemáticas, Humanidades y Lengua Castellana</option>
-              <option value="Licenciatura en Educación Básica Primaria">Licenciatura en Educación Básica Primaria
-              </option>
-              <option value="Mercadeo Agroindustrial">Mercadeo Agroindustrial</option>
-              <option value="Administración Agroindustrial">Administración Agroindustrial</option>
-              <option value="Administración Comercial y Financiera">Administración Comercial y Financiera</option>
-              <option value="Administración de Servicios de Salud">Administración de Servicios de Salud</option>
-              <option value="Tecnología en Electricidad Industrial">Tecnología en Electricidad Industrial</option>
-              <option value="Tecnología en Programación de sistemas informaticos">Tecnología en Programación de sistemas
-                informaticos</option>
-              <option value="Tecnología en Máquinas y Herramientas">Tecnología en Máquinas y Herramientas</option>
-              <option value="Tecnología en Obras Civiles">Tecnología en Obras Civiles</option>
+              <option value="8">Licenciatura en Educación Básica con énfasis en Matemáticas, Humanidades y Lengua Castellana</option>
+              <option value="7">Licenciatura en Educación Básica Primaria</option>
+              <option value="9">Mercadeo Agroindustrial</option>
+              <option value="4">Administración Agroindustrial</option>
+              <option value="5">Administración Comercial y Financiera</option>
+              <option value="6">Administración de Servicios de Salud</option>
+              <option value="2">Tecnología en Electricidad Industrial</option>
+              <option value="1">Tecnología en Programación de sistemas informaticos</option>
+              <option value="3">Tecnología en Máquinas y Herramientas</option>
+              <option value="10">Tecnología en Obras Civiles</option>
             </select>
           </div>
+          <!-- id_docente se toma de localStorage en JS -->
           <div class="col-12 mt-3">
             <button type="submit" class="btn btn-primary">Agregar Estudiante</button>
           </div>
@@ -122,7 +145,6 @@
         <tbody id="tablaProgreso"></tbody>
       </table>
     </section>
-    <!--Formulario de registro de estudiantes,  -->
 
     <section id="directrices" class="seccion" style="display:none;">
       <h2>Consultar Directrices</h2>
