@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="../css/docentes.css">
   <!--script defer src="../js/docente.js"></script-->
 </head>
+
 <body>
 
   <!-- Barra lateral de navegación -->
@@ -16,7 +18,7 @@
     <ul>
       <li><a href="#" onclick="mostrarSeccion('añadirEstudiantes')">Añadir Estudiantes</a></li>
       <li><a href="#" onclick="mostrarSeccion('progresoEstudiantes')">Ver Progreso</a></li>
-      <li><a href="#" onclick="mostrarSeccion('directrices')">Añadir Directrices</a></li>
+      <li><a href="#" onclick="mostrarSeccion('directrices')">Consultar Directrices</a></li>
       <li><a href="#" onclick="mostrarSeccion('notas')">Añadir Notas</a></li>
       <li><a href="#" onclick="mostrarSeccion('citaciones')">Citaciones</a></li>
       <li><a href="#" onclick="mostrarSeccion('observaciones')">Observaciones</a></li>
@@ -76,22 +78,28 @@
             </select>
           </div>
           <div class="col-md-6">
-            <input type="text" id="institucion_procedencia" class="form-control" placeholder="Institución de procedencia" required>
+            <input type="text" id="institucion_procedencia" class="form-control"
+              placeholder="Institución de procedencia" required>
           </div>
           <div class="col-md-6">
-            <input type="number" id="anio_graduacion" class="form-control" placeholder="Año de graduación" min="1900" max="2100">
+            <input type="number" id="anio_graduacion" class="form-control" placeholder="Año de graduación" min="1900"
+              max="2100">
           </div>
           <div class="col-md-6">
             <select id="programa" class="form-select" required>
               <option value="" disabled selected>Programa al que se inscribe</option>
-              <option value="Licenciatura en Educación Básica con énfasis en Matemáticas, Humanidades y Lengua Castellana">Licenciatura en Educación Básica con énfasis en Matemáticas, Humanidades y Lengua Castellana</option>
-              <option value="Licenciatura en Educación Básica Primaria">Licenciatura en Educación Básica Primaria</option>
+              <option
+                value="Licenciatura en Educación Básica con énfasis en Matemáticas, Humanidades y Lengua Castellana">
+                Licenciatura en Educación Básica con énfasis en Matemáticas, Humanidades y Lengua Castellana</option>
+              <option value="Licenciatura en Educación Básica Primaria">Licenciatura en Educación Básica Primaria
+              </option>
               <option value="Mercadeo Agroindustrial">Mercadeo Agroindustrial</option>
               <option value="Administración Agroindustrial">Administración Agroindustrial</option>
               <option value="Administración Comercial y Financiera">Administración Comercial y Financiera</option>
               <option value="Administración de Servicios de Salud">Administración de Servicios de Salud</option>
               <option value="Tecnología en Electricidad Industrial">Tecnología en Electricidad Industrial</option>
-              <option value="Tecnología en Programación de sistemas informaticos">Tecnología en Programación de sistemas informaticos</option>
+              <option value="Tecnología en Programación de sistemas informaticos">Tecnología en Programación de sistemas
+                informaticos</option>
               <option value="Tecnología en Máquinas y Herramientas">Tecnología en Máquinas y Herramientas</option>
               <option value="Tecnología en Obras Civiles">Tecnología en Obras Civiles</option>
             </select>
@@ -117,10 +125,26 @@
     <!--Formulario de registro de estudiantes,  -->
 
     <section id="directrices" class="seccion" style="display:none;">
-      <h2>Añadir Directrices</h2>
-      <textarea id="nuevaDirectriz" placeholder="Escribe una directriz..."></textarea>
-      <button onclick="guardarDirectriz()">Guardar</button>
-      <ul id="listaDirectrices"></ul>
+      <h2>Consultar Directrices</h2>
+      <select class="form-select" name="estudiantesDirec" id="estudiantesDirec">
+        <option value="">Cargando estudiantes...</option>
+      </select>
+
+      <div class="container mt-4">
+   <table class="table table-striped table-bordered" id="tablaDirectrices">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se insertarán las directrices -->
+
+    </tbody>
+  </table>
+</div>
+
     </section>
 
     <section id="notas" class="seccion" style="display:none;">
@@ -145,4 +169,5 @@
   <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/docente.js"></script>
 </body>
+
 </html>

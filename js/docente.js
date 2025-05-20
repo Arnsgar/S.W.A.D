@@ -1,5 +1,8 @@
 // Verificar si el usuario tiene sesión activa y es docente
 document.addEventListener("DOMContentLoaded", function () {
+
+
+
   let user = localStorage.getItem("user");
   let role = localStorage.getItem("rol"); // Se usa "rol" en vez de "role"
 
@@ -7,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let nombreDocente = document.getElementById("nombreDocente");
   if (nombreDocente && user) {
     nombreDocente.innerText = `Bienvenido, ${user}`;
+
   }
 });
 
@@ -83,3 +87,74 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("formEstudiante").addEventListener("submit", agregarEstudiante);
 });
 
+
+  // Puedes poner este script al final de tu archivo HTML o en tu archivo JS principal
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('../backend/obtener_estudiantes.php')
+    .then(response => response.json())
+    .then(result => {
+      const select = document.getElementById('estudiantesDirec');
+      select.innerHTML = '<option value="">Seleccione un estudiante</option>';
+      if (result.success && Array.isArray(result.data)) {
+        result.data.forEach(est => {
+          const option = document.createElement('option');
+          option.value = est.id_estudiante;
+          option.setAttribute('data-id_programa', est.id_programa);
+          option.textContent = est.nombre + ' ' + est.apellido + '\u00A0\u00A0\u00A0'+'Programa: ' + est.programa;
+          select.appendChild(option);
+        });
+      } else {
+        select.innerHTML = '<option value="">No hay estudiantes</option>';
+      }
+    })
+    .catch(() => {
+      const select = document.getElementById('estudiantesDirec');
+      select.innerHTML = '<option value="">Error al cargar</option>';
+    });
+
+
+  });
+
+const select = document.getElementById('estudiantesDirec');
+
+select.addEventListener('change', function () {
+  const selectedOption = select.options[select.selectedIndex];
+  const id_programa = selectedOption.getAttribute('data-id_programa');
+
+  if (id_programa) {
+    consultarDirectrices(id_programa); // Llama la función que ya configuraste
+  }
+});
+
+// mostrar las directrices actuales del estudiante
+  function consultarDirectrices(id_programa){
+
+    fetch(`../backend/directrices_actuales.php?   id_programa=${encodeURIComponent(id_programa)}`)
+    .then(response => response.json())
+    .then(result => {
+      const tbody = document.querySelector('#tablaDirectrices tbody');
+      tbody.innerHTML = ''; // Limpiar tabla
+
+      if (result.success && Array.isArray(result.data)) {
+        result.data.forEach(est => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${est.id_modulo}</td>
+            <td>${est.nombre}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } else {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="3" class="text-center">No hay estudiantes disponibles</td>`;
+        tbody.appendChild(row);
+      }
+    })
+    .catch(() => {
+      const tbody = document.querySelector('#tablaEstudiantes tbody');
+      tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Error al cargar los estudiantes</td></tr>`;
+    });
+
+
+
+  }
