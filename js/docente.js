@@ -3,13 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
   let user = localStorage.getItem("user");
   let role = localStorage.getItem("rol"); // Se usa "rol" en vez de "role"
 
-  if (!user || role !== "docente") {
-    window.location.href = "../index.html"; // Redirigir si no es docente
-  } else {
-    let nombreDocente = document.getElementById("nombreDocente");
-    if (nombreDocente) {
-      nombreDocente.innerText = `Bienvenido, ${user}`;
-    }
+  // Solo mostrar mensaje, no redirigir
+  let nombreDocente = document.getElementById("nombreDocente");
+  if (nombreDocente && user) {
+    nombreDocente.innerText = `Bienvenido, ${user}`;
   }
 });
 
@@ -24,12 +21,25 @@ function mostrarSeccion(id) {
 // Agregar estudiante a la lista
 function agregarEstudiante(event) {
   event.preventDefault();
-  let nombre = document.getElementById("nombre").value;
-  let grado = document.getElementById("grado").value;
-  let lista = document.getElementById("listaEstudiantes");
+  // Obtener valores del formulario
+  const nombre = document.getElementById("nombre").value;
+  const apellido = document.getElementById("apellido").value;
+  const fecha_nacimiento = document.getElementById("fecha_nacimiento").value;
+  const sexo = document.getElementById("sexo").value;
+  const nacionalidad = document.getElementById("nacionalidad").value;
+  const departamento = document.getElementById("departamento").value;
+  const municipio = document.getElementById("municipio").value;
+  const lugar_residencia = document.getElementById("lugar_residencia").value;
+  const nivel_estudios = document.getElementById("nivel_estudios").value;
+  const institucion_procedencia = document.getElementById("institucion_procedencia").value;
+  const anio_graduacion = document.getElementById("anio_graduacion").value;
+  const programa = document.getElementById("programa").value;
 
-  let estudiante = document.createElement("p");
-  estudiante.textContent = `${nombre} - ${grado}`;
+  // Mostrar los datos en la lista
+  const lista = document.getElementById("listaEstudiantes");
+  const estudiante = document.createElement("div");
+  estudiante.className = "alert alert-secondary mt-2";
+  estudiante.innerHTML = `<b>${nombre} ${apellido}</b> | Nacimiento: ${fecha_nacimiento} | Sexo: ${sexo} | Nacionalidad: ${nacionalidad} | Departamento: ${departamento} | Municipio: ${municipio} | Residencia: ${lugar_residencia} | Nivel: ${nivel_estudios} | Institución: ${institucion_procedencia} | Año: ${anio_graduacion} | Programa: ${programa}`;
   lista.appendChild(estudiante);
 
   document.getElementById("formEstudiante").reset();
@@ -65,10 +75,11 @@ function guardarNota() {
 function logout() {
   localStorage.removeItem("user");
   localStorage.removeItem("rol");
-  window.location.href = "index.html";
+  // No redirigir a ningún lado
 }
 
 // Evento para agregar estudiantes al formulario
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("formEstudiante").addEventListener("submit", agregarEstudiante);
 });
+
