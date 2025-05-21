@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     nombreDocente.innerText = `Bienvenido, ${user}`;
 
   }
+  cargarEstudiantes(); // Cargar estudiantes al inicio
 });
 
 // Manejo de secciones
@@ -83,6 +84,7 @@ function agregarEstudiante(event) {
   .then(res => res.json())
   .then(data => {
     if (data.success) {
+      cargarEstudiantes(); // Recargar la lista de estudiantes
       // Mostrar los datos en la lista solo si el registro fue exitoso
       const lista = document.getElementById("listaEstudiantes");
       const estudiante = document.createElement("div");
@@ -100,17 +102,7 @@ function agregarEstudiante(event) {
   });
 }
 
-// Guardar una nueva directriz
-function guardarDirectriz() {
-  let directriz = document.getElementById("nuevaDirectriz").value;
-  let lista = document.getElementById("listaDirectrices");
 
-  let item = document.createElement("li");
-  item.textContent = directriz;
-  lista.appendChild(item);
-
-  document.getElementById("nuevaDirectriz").value = "";
-}
 
 // Guardar una nota para un estudiante
 function guardarNota() {
@@ -140,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // Puedes poner este script al final de tu archivo HTML o en tu archivo JS principal
-document.addEventListener('DOMContentLoaded', function() {
+function cargarEstudiantes() {
   fetch('../backend/obtener_estudiantes.php')
     .then(response => response.json())
     .then(result => {
@@ -164,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-  });
+  };
 
 const select = document.getElementById('estudiantesDirec');
 
