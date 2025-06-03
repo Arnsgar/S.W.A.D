@@ -46,30 +46,28 @@ $rutaServidor = __DIR__ . '/firmas/' . $nombreArchivo;
 file_put_contents($rutaServidor, $imagenDatos);
 
 
-    $check= $pdo->prepare("SELECT id_instituto FROM instituto WHERE usuario = ? OR num_documento = ?");
+    $check= $pdo->prepare("SELECT id_docente FROM docente WHERE usuario = ? OR num_documento = ?");
     $check->execute([$username, $document_number]);
   if ($check->rowCount() > 0) {
             $response["message"] = "El usuario o documento ya está registrado.";
             echo json_encode($response);
             exit;
         }
+
 file_put_contents("log.txt", "Datos recibidos: " . json_encode($_POST) . "\n", FILE_APPEND);
 
-        $stmt=$pdo->prepare("INSERT INTO instituto 
-            (nombre_instituto, direccion, telefono, correo, nombre, apellidos, id_tipodoc, num_documento, usuario, contraseña, codigo, firma, tipo_codigo, id_administrador)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$institute_name, $address, $phone, 
-        $email, $rector_name, $rector_surname, $document_type, 
-        $document_number, $username, $password, $code, $rutaRelativa, $code_type, 
-        $id_administrador]);
+        $stmt=$pdo->prepare("INSERT INTO docente 
+            (nombres, apellidos, id_tipodoc, num_documento, correo,telefono, usuario, contraseña, id_instituto, firma)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $surname, $document_type, $document_number, $email, $phone, $username, $password, $id_instituto, $rutaRelativa]);
 
         $response["success"] = true;
-        $response["message"] = "Instituto registrado exitosamente.";
+        $response["message"] = "Docente registrado exitosamente.";
 
 
 
     }catch (PDOException $e) {
-        $response["message"] = "Error al registrar el instituto: " . $e->getMessage();
+        $response["message"] = "Error al registrar el docente: " . $e->getMessage();
         } catch (Exception $e) {
                  $response["message"] = "Error: " . $e->getMessage();
          }
