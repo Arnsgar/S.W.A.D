@@ -120,3 +120,101 @@ document.getElementById("formCrearProfesor").addEventListener("submit", async fu
       alert("Error de conexión o del servidor: " + error.message);
     });
 });
+
+//funciones para validar
+async function verificarUsuario(usuario) {
+  const formData = new FormData();
+  formData.append("usuario", usuario);
+  formData.append("accion", "verificar_usuario");
+
+  const res = await fetch("../backend/verificar2.php", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  return data.existe; // true si ya existe
+}
+
+async function verificarDocumento(doc) {
+  const formData = new FormData();
+  formData.append("documento", doc);
+  formData.append("accion", "verificar_documento");
+
+  const res = await fetch("../backend/verificar2.php", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  return data.existe;
+}
+
+
+
+
+
+
+
+
+
+//firma
+//verificar si se dibujo algo en canvas en la firma
+
+
+function canvasEstaVacio(canvas) {
+  const contexto = canvas.getContext('2d');
+  const pixeles = contexto.getImageData(0, 0, canvas.width, canvas.height).data;
+
+  for (let i = 3; i < pixeles.length; i += 4) {
+    if (pixeles[i] !== 0) {
+      return false; // Hay algo dibujado
+    }
+  }
+  return true; // Está vacío
+}
+// Función para mostrar la sección de firma
+
+const canvas = document.getElementById("firmaCanvas");
+const firmaImagen = document.getElementById("firmaBase64");
+const ctx = canvas.getContext("2d", { willReadFrequently: true }); // Mejor rendimiento
+
+let dibujando = false;
+
+canvas.addEventListener("mousedown", e => {
+  dibujando = true;
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX, e.offsetY);
+});
+
+canvas.addEventListener("mousemove", e => {
+  if (dibujando) {
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    
+  }
+});
+
+canvas.addEventListener("mouseup", () => {
+  dibujando = false;
+ guardarFirma();
+});
+
+canvas.addEventListener("mouseleave", () => {
+  dibujando = false;
+ 
+});
+
+function borrarFirma() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  firmaImagen.value = ""; // limpiar también el valor oculto
+}
+
+function guardarFirma() {
+  if (!canvasEstaVacio(canvas)) {
+    const imagen = canvas.toDataURL("image/png");
+    firmaImagen.value = imagen;
+  } else {
+    firmaImagen.value = ""; // fuerza a vacío si no hay firma válida
+  }
+}

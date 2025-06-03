@@ -44,7 +44,7 @@ $firmaBase64 = str_replace('data:image/png;base64,', '', $firmaBase64);
 $firmaBase64 = str_replace(' ', '+', $firmaBase64);
 $imagenDatos = base64_decode($firmaBase64);
 
-$nombreArchivo = 'firma_' . time() . '.png';
+$nombreArchivo = 'firmaRector_' . time() . '.png';
 $rutaRelativa = 'firmas/' . $nombreArchivo;
 $rutaServidor = __DIR__ . '/firmas/' . $nombreArchivo;
 

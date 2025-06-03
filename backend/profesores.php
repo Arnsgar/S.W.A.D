@@ -3,34 +3,29 @@ include "bd.php";
 
 
 session_start();
-
 header("Content-Type: application/json");
 
 $response = ["success" => false, "message" => ""];
 file_put_contents("log.txt", "Se hizo una petición\n", FILE_APPEND);
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     try{
-        if (!isset($_SESSION["id_administrador"])) {
-            throw new Exception("No hay sesión activa de administrador.");
+        if (!isset($_SESSION["id_instituto"])) {
+            throw new Exception("No hay sesión activa de Instituto.");
         }
 
     $rutaRelativa=null;
 
-    $institute_name=trim($_POST["institute_name"]);
-    $address=trim($_POST["address"]);
-    $phone=trim($_POST["phone"]);
-    $email=trim($_POST["email"]);
-    $rector_name=trim($_POST["rector_name"]);
-    $rector_surname=trim($_POST["rector_surname"]);
-    $document_type=trim($_POST["document_type"]);
-    $document_number=trim($_POST["document_number"]);
-    $username=trim($_POST["username"]);
-    $password=password_hash(trim($_POST["password"]), PASSWORD_DEFAULT);
-    $code_type=strtolower(trim($_POST["code_type"]));
-    $code=trim($_POST["code"]);
+    $name=trim($_POST["nombres"]);
+    $surname=trim($_POST["apellidos"]);
+    $document_type=trim($_POST["tipoDoc"]);
+    $document_number=trim($_POST["numDoc"]);
+    $email=trim($_POST["correo"]);
+    $phone=trim($_POST["telefono"]);
     $firmaBase64=isset($_POST["firmaBase64"]) ? $_POST["firmaBase64"] : null;
-    //$firma=trim($_POST["firma"]);
-    $id_administrador = $_SESSION["id_administrador"];
+    $username=trim($_POST["usuario"]);
+    $password=password_hash(trim($_POST["contrasena"]), PASSWORD_DEFAULT);
+  
+    $id_instituto = $_SESSION["id_instituto"];
 
 // Validar firma
 if (!$firmaBase64 || strlen(trim($firmaBase64)) < 50) {
@@ -44,7 +39,7 @@ $firmaBase64 = str_replace('data:image/png;base64,', '', $firmaBase64);
 $firmaBase64 = str_replace(' ', '+', $firmaBase64);
 $imagenDatos = base64_decode($firmaBase64);
 
-$nombreArchivo = 'firma_' . time() . '.png';
+$nombreArchivo = 'firmaDocente_' . time() . '.png';
 $rutaRelativa = 'firmas/' . $nombreArchivo;
 $rutaServidor = __DIR__ . '/firmas/' . $nombreArchivo;
 

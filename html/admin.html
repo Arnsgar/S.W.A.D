@@ -57,31 +57,31 @@
             <!-- Información de la Institución -->
             <div class="col-md-6">
               <input type="text" id="nombre_instituto" name="institute_name" class="form-control" placeholder="Nombre de la Institución" required>
-              <div class="error" id="error_nombre_instituto">error</div>
+              <div class="error" id="error_nombre_instituto"></div>
             </div>
             
 
             <div class="col-md-6">
               <input type="text" id="direccion" name="address" class="form-control" placeholder="Dirección" required>
-              <div class="error" id="error_direccion">error</div>
+              <div class="error" id="error_direccion"></div>
             </div>
             <div class="col-md-6">
               <input type="text" id="telefono" name="phone" class="form-control" placeholder="Teléfono" required>
-              <div class="error" id="error_telefono">error</div>
+              <div class="error" id="error_telefono"></div>
             </div>
             <div class="col-md-6">
               <input type="email" id="correo" name="email" class="form-control" placeholder="Correo Electrónico" required>
-              <div class="error" id="error_correo">error</div>
+              <div class="error" id="error_correo"></div>
             </div>
 
             <!-- Información del Rector -->
             <div class="col-md-6">
               <input type="text" id="nombre_rector" name="rector_name" class="form-control" placeholder="Nombre del Rector" required>
-              <div class="error" id="error_nombre_rector">error</div>
+              <div class="error" id="error_nombre_rector"></div>
             </div>
             <div class="col-md-6">
               <input type="text" id="apellidos" name="rector_surname" class="form-control" placeholder="Apellidos del Rector" required>
-              <div class="error" id="error_apellidos">error</div>
+              <div class="error" id="error_apellidos"></div>
             </div>
             <div class="col-md-6">
               <select id="tipo_documento" name="document_type" class="form-select" required>
@@ -97,21 +97,21 @@
                 <option value="9">Numero de identificacion tributaria</option>
                 <option value="10">Otro</option>
               </select>
-              <div class="error" id="error_tipo_documento">error</div>
+              <div class="error" id="error_tipo_documento"></div>
             </div>
             <div class="col-md-6">
               <input type="text" id="doc_rector" name="document_number" class="form-control" placeholder="Número de Documento del Rector" required maxlength="30">
-              <div class="error" id="error_doc_rector">error</div>
+              <div class="error" id="error_doc_rector"></div>
             </div>
-      
+
             <!-- Datos de Usuario -->
             <div class="col-md-6">
               <input type="text" id="usuario" name="username" class="form-control" placeholder="Nombre de Usuario" required maxlength="50">
-              <div class="error" id="error_usuario">error</div>
+              <div class="error" id="error_usuario"></div>
             </div>
             <div class="col-md-6">
               <input type="password" id="contrasena" name="password" class="form-control" placeholder="Contraseña" required>
-              <div class="error" id="error_contrasena">error</div>
+              <div class="error" id="error_contrasena"></div>
             </div>
 
             <!-- Código de Registro -->
@@ -124,16 +124,16 @@
                 <option value="rut">RUT</option>
                 <option value="otro">Otro</option>
               </select>
-              <div class="error" id="error_tipo_codigo">error</div>
+              <div class="error" id="error_tipo_codigo"></div>
             </div>
             <div class="col-md-6">
               <input type="text" id="codigo" name="code" class="form-control" placeholder="Código de Identificación" required maxlength="20">
-            <div class="error" id="error_codigo">error</div>
+              <div class="error" id="error_codigo"></div>
             </div>
-      
+
             <!-- Firma del Rector con Canvas -->
             <div class="col-md-12">
-              <label for="firmaCanvas" class="form-label">Firma del Rector (dibuje aquí)   </label> <div class="error" id="error_firma_rector">error </div>
+              <label for="firmaCanvas" class="form-label">Firma del Rector (dibuje aquí)   </label> <div class="error" id="error_firma_rector"> </div>
               <canvas id="firmaCanvas" width="400" height="150" style="border:1px solid #ccc; display: block;"></canvas>
               <div class="mt-2">
                 <button type="button" class="btn btn-secondary btn-sm" onclick="borrarFirma()">Borrar Firma</button>

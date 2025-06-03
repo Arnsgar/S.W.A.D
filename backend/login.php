@@ -50,6 +50,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
              if ($rol === "administrador") {
                  $_SESSION["id_administrador"] = $usuario["id_administrador"]; // 🟢 Guarda el ID en sesión
              }
+             if ($rol === "instituto") {
+                 $_SESSION["id_instituto"] = $usuario["id_instituto"]; // 🟢 Guarda el ID en sesión
+             }
         $_SESSION["intentos"]=0;
         $_SESSION["bloqueo_hasta"]=null;    
 
