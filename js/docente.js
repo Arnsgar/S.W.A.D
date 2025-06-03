@@ -201,3 +201,67 @@ select.addEventListener('change', function () {
 
 
   }
+
+// Manejo de búsqueda de profesores unificada
+document.getElementById('form-buscar-profesor').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const busqueda = document.getElementById('busqueda').value.trim();
+
+  const resultadosDiv = document.getElementById('resultados');
+  resultadosDiv.innerHTML = '<div class="alert alert-info">Buscando...</div>';
+
+  fetch(`../backend/buscar_profesor.php?busqueda=${encodeURIComponent(busqueda)}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
+      }
+      return response.json();
+    })
+    .then(data => {
+      resultadosDiv.innerHTML = '';
+
+      // Actualizar la lógica para mostrar todos los campos relevantes en los resultados
+      if (data.length > 0) {
+        const table = document.createElement('table');
+        table.className = 'table table-bordered table-hover';
+        table.innerHTML = `
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Tipo Documento</th>
+              <th>Número Documento</th>
+              <th>Correo</th>
+              <th>Teléfono</th>
+              <th>Usuario</th>
+              <th>Fecha Registro</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map(profesor => `
+              <tr>
+                <td>${profesor.id_docente}</td>
+                <td>${profesor.nombres}</td>
+                <td>${profesor.apellidos}</td>
+                <td>${profesor.id_tipodoc}</td>
+                <td>${profesor.num_documento}</td>
+                <td>${profesor.correo}</td>
+                <td>${profesor.telefono}</td>
+                <td>${profesor.usuario}</td>
+                <td>${profesor.fecha_registro}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+        resultadosDiv.appendChild(table);
+      } else {
+        resultadosDiv.innerHTML = '<div class="alert alert-warning">No se encontraron resultados.</div>';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      resultadosDiv.innerHTML = '<div class="alert alert-danger">Ocurrió un error al realizar la búsqueda. Intente nuevamente.</div>';
+    });
+});
