@@ -155,10 +155,10 @@
         <h2>Buscar Cliente</h2>
         <form id="buscarForm" class="mb-3">
           <div class="row g-3">
-            <div class="col-md-6">
-              <input type="number" id="buscarId" class="form-control" placeholder="Ingrese ID de Cliente" required>
+            <div class="col-md-12">
+              <input type="text" id="buscarGeneral" class="form-control" placeholder="Buscar por ID, Número de Documento o Nombre del Instituto">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
               <button type="submit" class="btn btn-outline-primary">Buscar</button>
             </div>
           </div>
@@ -210,10 +210,17 @@
   <script>
     document.getElementById('buscarForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const idBusqueda = document.getElementById('buscarId').value;
+      const busquedaGeneral = document.getElementById('buscarGeneral').value;
       const resultadoDiv = document.getElementById('resultadoBusqueda');
 
-      fetch(`../backend/buscar_cliente.php?id=${encodeURIComponent(idBusqueda)}`)
+      // Construir la URL con el parámetro de búsqueda
+      let url = `../backend/buscar_cliente.php?`;
+      if (busquedaGeneral) url += `busqueda=${encodeURIComponent(busquedaGeneral)}`;
+
+      // Eliminar el último '&' o '?' si es necesario
+      url = url.replace(/[&?]$/, '');
+
+      fetch(url)
         .then(response => {
           if (!response.ok) throw new Error("HTTP status " + response.status);
           return response.json();
