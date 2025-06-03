@@ -132,6 +132,7 @@ document.getElementById("clienteForm").addEventListener("submit", async function
       alert("Cliente guardado correctamente");
       document.getElementById("clienteForm").reset();
       borrarFirma();
+      cargarClientes(); // Recargar la lista de clientes
     } else {
       alert("Error al guardar: " + data.message);
     }
@@ -245,6 +246,33 @@ function mostrarSeccion(id) {
   document.getElementById(id).style.display = "block";
 }
 
+// Función para eliminar un instituto
+function eliminarCliente(id) {
+  // Confirmación antes de eliminar
+   if (!confirm("¿Estás seguro de que deseas eliminar este instituto?")) return;
+
+  fetch('../backend/eliminar_cliente.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: id })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Cliente eliminado correctamente");
+        cargarClientes(); // Recarga la tabla
+      } else {
+        alert("Error al eliminar: " + data.message);
+      }
+    })
+    .catch(error => {
+      alert("Error de conexión o del servidor: " + error.message);
+    });
+
+}
+
 
 
 // Cargar clientes desde el backend (listar_clientes.php)
@@ -258,19 +286,19 @@ function cargarClientes() {
         data.data.forEach(cliente => {
           const fila = document.createElement('tr');
           fila.innerHTML = `
-            <td>${cliente.id}</td>
-            <td>${cliente.nombres}</td>
-            <td>${cliente.apellidos}</td>
-            <td>${cliente.numero_documento}</td>
-            <td>${cliente.correo}</td>
-            <td>${cliente.usuario}</td>
-            <td>${cliente.empresa}</td>
-            <td>
-              <button class="btn btn-danger btn-sm" onclick="eliminarCliente(${cliente.id})">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          `;
+  <td>${cliente.id}</td>
+  <td>${cliente.nombres}</td>
+  <td>${cliente.apellidos}</td>
+  <td>${cliente.numero_documento}</td>
+  <td>${cliente.correo}</td>
+  <td>${cliente.usuario}</td>
+  <td>${cliente.empresa}</td>
+  <td>
+    <button class="btn btn-danger btn-sm btn-eliminar-cliente" data-id="${cliente.id}">
+      <i class="bi bi-trash"></i>
+    </button>
+  </td>
+`;
           tbody.appendChild(fila);
         });
       } else {
@@ -285,24 +313,20 @@ function cargarClientes() {
 // Llamar al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
   cargarClientes();
+
+  // Delegación de eventos para eliminar cliente
+  const tbody = document.querySelector('#clienteTable tbody');
+  tbody.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-eliminar-cliente')) {
+      const id = e.target.closest('.btn-eliminar-cliente').dataset.id;
+      eliminarCliente(id);
+    }
+  });
 });
 
 
 
 /*
-
-
-
-
-// Función para eliminar un cliente
-function eliminarCliente(id) {
-  clientes = clientes.filter(c => c.id !== id);
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-  mostrarListadoClientes();
-}
-
-
-
 
 // Función para mostrar secciones
 function mostrarSeccion(id) {
