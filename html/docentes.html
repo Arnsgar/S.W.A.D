@@ -137,13 +137,9 @@
 
     <section id="progresoEstudiantes" class="seccion" style="display:none;">
       <h2>Progreso de Estudiantes</h2>
-      <table>
-        <tr>
-          <th>Estudiante</th>
-          <th>Progreso</th>
-        </tr>
-        <tbody id="tablaProgreso"></tbody>
-      </table>
+     <!-- Sección: Notas de Estudiantes -->
+
+
     </section>
 
     <section id="directrices" class="seccion" style="display:none;">
@@ -169,12 +165,11 @@
 
     </section>
 
+    
+
     <section id="notas" class="seccion" style="display:none;">
-      <h2>Añadir Notas</h2>
-      <input type="text" id="notaEstudiante" placeholder="Estudiante">
-      <input type="number" id="notaValor" placeholder="Nota">
-      <button onclick="guardarNota()">Guardar Nota</button>
-      <ul id="listaNotas"></ul>
+      <h2>Estudiantes Inscritos</h2>
+       <div id="listaEstudiantesNotas"></div>
     </section>
 
     <section id="citaciones" class="seccion" style="display:none;">
@@ -188,8 +183,42 @@
     </section>
   </main>
 
+
+
+
+  
+<!-- Modal para editar nota del estudiante -->
+<div class="modal fade" id="modalNota" tabindex="-1" aria-labelledby="modalNotaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formNota">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNotaLabel">Editar Nota</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Aquí luego pondremos los campos -->
+          <input type="hidden" id="modalEstudianteId">
+          <input type="text" id="modalEstudianteNombre" class="form-control mb-2" placeholder="Nombre del estudiante" readonly>
+          <!-- Aquí puedes agregar más campos después -->
+
+          <div id="listaModulosEstudiante"></div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
   <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/docente.js"></script>
+
+
+
 </body>
 
 </html>

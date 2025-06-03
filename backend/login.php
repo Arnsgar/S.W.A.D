@@ -53,6 +53,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
              if ($rol === "instituto") {
                  $_SESSION["id_instituto"] = $usuario["id_instituto"]; // 🟢 Guarda el ID en sesión
              }
+             if ($rol === "docente") {
+                 $_SESSION["id_docente"] = $usuario["id_docente"]; // 🟢 Guarda el ID en sesión
+             }
         $_SESSION["intentos"]=0;
         $_SESSION["bloqueo_hasta"]=null;    
 

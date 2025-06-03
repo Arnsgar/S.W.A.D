@@ -1,7 +1,13 @@
 <?php
 // backend/registrar_estudiante.php
+session_start();
 header('Content-Type: application/json');
 include 'bd.php';
+if (!isset($_SESSION['id_docente'])) {
+    echo json_encode(['success' => false, 'message' => 'No hay sesión activa de docente.']);
+    exit;
+}
+$id_docente = $_SESSION['id_docente'];
 
 // Recibir datos del formulario (POST)
 $data = json_decode(file_get_contents('php://input'), true);
@@ -9,7 +15,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 $campos = [
     'nombre', 'apellido', 'id_tipodoc', 'num_documento', 'sexo_nacimiento', 'fecha_nacimiento', 'nacionalidad',
     'departamento', 'municipio', 'direccion_residencia', 'correo', 'telefono', 'usuario', 'contrasena',
-    'nivel_estudios', 'institucion_procedencia', 'año_graduacion', 'id_programa', 'id_docente'
+    'nivel_estudios', 'institucion_procedencia', 'año_graduacion', 'id_programa'
 ];
 
 foreach ($campos as $campo) {
@@ -18,6 +24,7 @@ foreach ($campos as $campo) {
         exit;
     }
 }
+// Obtener el id_docente de la sesión
 
 try {
     $stmt = $pdo->prepare("INSERT INTO estudiante (nombre, apellido, id_tipodoc, num_documento, sexo_nacimiento, fecha_nacimiento, nacionalidad, departamento, municipio, direccion_residencia, correo, telefono, usuario, contraseña, nivel_estudios, institucion_procedencia, año_graduacion, id_programa, id_docente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -40,7 +47,7 @@ try {
         $data['institucion_procedencia'],
         $data['año_graduacion'],
         $data['id_programa'],
-        $data['id_docente']
+         $id_docente // <-- de la sesión
     ]);
     echo json_encode(['success' => true, 'message' => 'Estudiante registrado correctamente']);
 } catch (PDOException $e) {
