@@ -324,16 +324,52 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Buscar cliente
+document.getElementById('buscarForm').addEventListener('submit', function(e) {
+  e.preventDefault();
 
+  const busqueda = document.getElementById('buscarGeneral').value.trim();
+  const resultadoDiv = document.getElementById('resultadoBusqueda');
 
-/*
+  const params = new URLSearchParams();
 
-// Función para mostrar secciones
-function mostrarSeccion(id) {
-  document.querySelectorAll(".seccion").forEach(seccion => {
-    seccion.style.display = "none";
-  });
-  document.getElementById(id).style.display = "block";
-}
+  if (!isNaN(busqueda) && busqueda !== "") {
+    // Si es un número, puede ser ID o Número de Documento
+    if (busqueda.length <= 5) {
+      params.append('id', busqueda); // Asumimos que es un ID si es corto
+    } else {
+      params.append('num_documento', busqueda); // Asumimos que es un Número de Documento si es largo
+    }
+  } else {
+    // Si no es un número, asumimos que es un Nombre de Instituto
+    params.append('nombre_instituto', busqueda);
+  }
 
-*/
+  console.log("Parámetros enviados:", params.toString()); // Registro de depuración
+
+  fetch(`../backend/buscar_cliente.php?${params.toString()}`)
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP status " + response.status);
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        resultadoDiv.innerHTML = data.institutos.map(cliente => `
+          <div class="card mt-3">
+            <div class="card-body">
+              <h5 class="card-title">${cliente.nombre_instituto}</h5>
+              <p class="card-text"><strong>ID:</strong> ${cliente.id_instituto}</p>
+              <p class="card-text"><strong>Dirección:</strong> ${cliente.direccion}</p>
+              <p class="card-text"><strong>Teléfono:</strong> ${cliente.telefono}</p>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        resultadoDiv.innerHTML = `<p>${data.message}</p>`;
+      }
+    })
+    .catch(error => {
+      resultadoDiv.innerHTML = `<p>Error al buscar el cliente.</p>`;
+      console.error("Error en fetch:", error);
+    });
+});
