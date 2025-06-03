@@ -61,6 +61,9 @@ document.getElementById("formCrearProfesor").addEventListener("submit", async fu
   }
   if (!correo || !esCorreo(correo)) {
     errores.error_correo = "Correo no válido.";
+  }else{
+    const existe = await verificarCorreo(correo);
+    if (existe) errores.error_correo = "Correo ya registrado.";
   }
   if (!telefono || !esTelefono(telefono)) {
     errores.error_telefono = "Teléfono inválido (7 a 15 dígitos).";
@@ -109,6 +112,7 @@ document.getElementById("formCrearProfesor").addEventListener("submit", async fu
           alert("Profesor creado correctamente");
           document.getElementById("formCrearProfesor").reset();
           borrarFirma();
+          cargarProfesores(); // Recargar lista de profesores
         } else {
           alert("Error al guardar: " + data.message);
         }
@@ -150,7 +154,19 @@ async function verificarDocumento(doc) {
   return data.existe;
 }
 
+async function verificarCorreo(correo) {
+  const formData = new FormData();
+  formData.append("correo", correo);
+  formData.append("accion", "verificar_correo");
 
+  const res = await fetch("../backend/verificar2.php", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  return data.existe;
+}
 
 
 
@@ -218,3 +234,85 @@ function guardarFirma() {
     firmaImagen.value = ""; // fuerza a vacío si no hay firma válida
   }
 }
+
+//listar profesores inscritos
+
+
+// Función para eliminar un instituto
+function eliminarDocente(id) {
+  // Confirmación antes de eliminar
+   if (!confirm("¿Estás seguro de que deseas eliminar este docente?")) return;
+
+  fetch('../backend/eliminar_profesores.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: id })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Docente eliminado correctamente");
+        cargarProfesores(); // Recarga la tabla
+      } else {
+        alert("Error al eliminar: " + data.message);
+      }
+    })
+    .catch(error => {
+      alert("Error de conexión o del servidor: " + error.message);
+    });
+
+}
+
+
+
+// Cargar profesores desde el backend (listar_profesores.php)
+function cargarProfesores() {
+  fetch('../backend/listar_profesores.php')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const tbody = document.querySelector('#profesorTable tbody');
+        tbody.innerHTML = '';
+        data.data.forEach(docente => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+  <td>${docente.id}</td>
+  <td>${docente.nombres}</td>
+  <td>${docente.apellidos}</td>
+  <td>${docente.numero_documento}</td>
+  <td>${docente.correo}</td>
+  <td>${docente.telefono}</td>
+  <td>${docente.usuario}</td>
+
+  <td>
+    <button class="btn btn-danger btn-sm btn-eliminar-docente" data-id="${docente.id}">
+      <i class="bi bi-trash"></i>
+    </button>
+  </td>
+`;
+          tbody.appendChild(fila);
+        });
+      } else {
+        alert('Error al cargar docentes: ' + data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error al obtener docentes:', error);
+    });
+}
+
+// Llamar al cargar la página
+document.addEventListener("DOMContentLoaded", function () {
+  cargarProfesores();
+
+  // Delegación de eventos para eliminar docente
+  const tbody = document.querySelector('#profesorTable tbody');
+  tbody.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-eliminar-docente')) {
+      const id = e.target.closest('.btn-eliminar-docente').dataset.id;
+      eliminarDocente(id);
+    }
+  });
+});

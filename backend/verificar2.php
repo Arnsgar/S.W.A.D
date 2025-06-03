@@ -28,6 +28,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $response["existe"] = true;
         }
     }
+    if ($accion === "verificar_correo") {
+        $correo = trim($_POST["correo"]);
+
+        $stmt = $pdo->prepare("SELECT id_docente FROM docente WHERE correo = ?");
+        $stmt->execute([$correo]);
+
+        if ($stmt->fetch()) {
+            $response["existe"] = true;
+        }
+    }
 }
 
 echo json_encode($response);
