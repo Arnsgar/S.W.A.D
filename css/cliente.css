@@ -1,4 +1,21 @@
+ /*Slider bar personalizado*/
+ .sidebar {
+    position: fixed;
+    top: 56px; /* altura de navbar */
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    transition: right 0.3s ease;
+    z-index: 1050;
+  }
+
+  .sidebar.active {
+    right: 0;
+  }
+
+
 /* Estilos generales */
+
 body {
     font-family: Arial, sans-serif;
     background: #f4f4f4;

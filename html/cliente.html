@@ -12,15 +12,24 @@
   <link rel="stylesheet" href="../css/cliente.css">
 </head>
 <body>
+  
   <!-- Navbar con menú desplegable para el usuario -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">SWAD</a>
+
+        <!-- Botón hamburguesa -->
+  <button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral">
+    <i class="bi bi-list" style="font-size: 1rem;"></i>
+  </button>
+
+      <a class="navbar-brand" href="index.html">SWAD</a>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
               data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" 
               aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
@@ -37,53 +46,175 @@
           </li>
         </ul>
       </div>
+
     </div>
   </nav>
 
+  <!-- Menú lateral (offcanvas) -->
+   <div class="offcanvas offcanvas-start text-white" tabindex="-1" id="menuLateral" aria-labelledby="menuLateralLabel" style="background-color: #0d6efd; width: 20%;">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title w-100 text-center  " id="menuLateralLabel">Gestion de <br> Profesores</h2>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column gap-3">
+      <button class="btn btn-primary w-100 text-start"  onclick="mostrarContenido('inicio')">Inicio</button>
+      <button class="btn btn-primary w-100 text-start" onclick="mostrarContenido('crear')">Crear Profesores</button>
+      <button class="btn btn-primary w-100 text-start" onclick="mostrarContenido('buscar')">Buscar Profesores</button>
+      <button class="btn btn-primary w-100 text-start" onclick="mostrarContenido('listado')">Listado de Profesores</button>
+    </div>
+  </div>
+  
+
+
+
   <!-- Contenido principal -->
-  <div class="container mt-4">
-    <h2 class="mb-4">Panel Principal</h2>
-    <div class="row">
-      <!-- Tarjeta: Generar Diploma -->
-      <div class="col-md-4 mb-4">
-        <div class="card text-center shadow-sm hover-card">
-          <div class="card-body">
-            <i class="bi bi-file-earmark-text icon-dashboard"></i>
-            <h5 class="card-title mt-2">Generar Diploma</h5>
-            <p class="card-text">Crea un nuevo diploma con los datos ingresados.</p>
-            <a href="#" class="btn btn-outline-primary">Ir</a>
+  <div class="container mt-4" id="contenido-principal">
+    <div id="contenido-inicio">
+       <h2 class="mb-4">Panel Principal Instituto</h2>
+      <div class="row">
+        <!-- Tarjeta: Generar Diploma -->
+        <div class="col-md-4 mb-4">
+          <div class="card text-center shadow-sm hover-card">
+            <div class="card-body">
+              <i class="bi bi-file-earmark-text icon-dashboard"></i>
+              <h5 class="card-title mt-2">Generar Diploma</h5>
+              <p class="card-text">Crea un nuevo diploma con los datos ingresados.</p>
+              <a href="#" class="btn btn-outline-primary">Ir</a>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Tarjeta: Guardar Datos -->
-      <div class="col-md-4 mb-4">
-        <div class="card text-center shadow-sm hover-card">
-          <div class="card-body">
-            <i class="bi bi-save icon-dashboard"></i>
-            <h5 class="card-title mt-2">Guardar Datos</h5>
-            <p class="card-text">Almacena la información de manera segura.</p>
-            <a href="#" class="btn btn-outline-success">Ir</a>
+        <!-- Tarjeta: Guardar Datos -->
+        <div class="col-md-4 mb-4">
+          <div class="card text-center shadow-sm hover-card">
+            <div class="card-body">
+              <i class="bi bi-save icon-dashboard"></i>
+              <h5 class="card-title mt-2">Guardar Datos</h5>
+              <p class="card-text">Almacena la información de manera segura.</p>
+              <a href="#" class="btn btn-outline-success">Ir</a>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Tarjeta: Imprimir Diploma -->
-      <div class="col-md-4 mb-4">
-        <div class="card text-center shadow-sm hover-card">
-          <div class="card-body">
-            <i class="bi bi-printer icon-dashboard"></i>
-            <h5 class="card-title mt-2">Imprimir Diploma</h5>
-            <p class="card-text">Imprime el diploma generado.</p>
-            <a href="#" class="btn btn-outline-warning">Ir</a>
+        <!-- Tarjeta: Imprimir Diploma -->
+        <div class="col-md-4 mb-4">
+          <div class="card text-center shadow-sm hover-card">
+            <div class="card-body">
+              <i class="bi bi-printer icon-dashboard"></i>
+              <h5 class="card-title mt-2">Imprimir Diploma</h5>
+              <p class="card-text">Imprime el diploma generado.</p>
+              <a href="#" class="btn btn-outline-warning">Ir</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  
+   <div id="contenido-crear" style="display:none;">
+      <h2>Crear Profesores</h2>
+
+      <form class="mt-4" id="formCrearProfesor" autocomplete="off">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="nombres" class="form-label">Nombres</label>
+        <input type="text" class="form-control" id="nombres" name="nombres" required>
+      <div class="error" id="error_nombres"></div>
+      </div>
+      <div class="col-md-6">
+        <label for="apellidos" class="form-label">Apellidos</label>
+        <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+      <div class="error" id="error_apellidos"></div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="tipoDoc" class="form-label">Tipo de Documento</label>
+        <select class="form-select" id="tipoDoc" name="tipoDoc" required>
+           <option value="" selected disabled>Tipo de Documento del Rector</option>
+                <option value="1">Cédula de Ciudadania</option>
+                <option value="2">Tarjeta de Identidad</option>
+                <option value="3">Cédula de Extranjería</option>
+                <option value="4">Pasaporte</option>
+                <option value="5">Documento nacional de identificacion</option>
+                <option value="6">Permiso especial de permanencia</option>
+                <option value="7">Registro civil de nacimiento</option>
+                <option value="8">Licencia de conduccion</option>
+                <option value="9">Numero de identificacion tributaria</option>
+                <option value="10">Otro</option>
+        </select>
+        <div class="error" id="error_tipoDoc"></div>
+      </div>
+      <div class="col-md-4">
+        <label for="numDoc" class="form-label">Número de Documento</label>
+        <input type="text" class="form-control" id="numDoc" name="numDoc" required>
+      <div class="error" id="error_numDoc"></div>
+      </div>
+      <div class="col-md-4">
+        <label for="correo" class="form-label">Correo Electrónico</label>
+        <input type="email" class="form-control" id="correo" name="correo" required>
+      <div class="error" id="error_correo"></div>
+      </div>
+    </div>
+
+   <div class="row mb-3">
+  <div class="col-md-6">
+    <label for="telefono" class="form-label">Teléfono</label>
+    <input type="tel" class="form-control" id="telefono" name="telefono" required>
+  <div class="error" id="error_telefono"></div>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <label for="firmaCanvas" class="form-label">Firma del Rector (dibuje aquí)</label>
+    <div class="error" id="error_firma_rector" style="font-size: 0.9em; color: #dc3545; display:none;">error</div>
+    <div class="d-flex align-items-center">
+      <canvas id="firmaCanvas" width="400" height="150" style="border:1px solid #ccc; display: block;"></canvas>
+      <button type="button" class="btn btn-secondary btn-sm ms-3" onclick="borrarFirma()">Borrar Firma</button>
+    </div>
+    <div class="error" id="error_firma"></div>
+    <!-- Campo oculto para guardar la firma en base64 -->
+    <input type="hidden" id="firmaBase64" name="firmaBase64" required>
+  </div>
+</div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="usuario" class="form-label">Usuario</label>
+        <input type="text" class="form-control border-primary" id="usuario" name="usuario" required style="background-color: #e7f1ff;">
+      <div class="error" id="error_usuario"></div>
+      </div>
+      <div class="col-md-6">
+        <label for="contrasena" class="form-label">Contraseña</label>
+        <input type="password" class="form-control border-primary" id="contrasena" name="contrasena" required style="background-color: #e7f1ff;">
+      <div class="error" id="error_contrasena"></div>
+      </div>
+    </div>
+     <div class="d-flex justify-content-center mt-4">
+      <button type="submit" class="btn btn-success px-5" style="min-width: 200px;">Crear Profesor</button>
+    </div>
+  </form>
+      <!-- Aquí puedes agregar tu formulario de creación -->
+    </div>
+    <div id="contenido-buscar" style="display:none;">
+      <h2>Buscar Profesores</h2>
+      <p>Aquí puedes buscar profesores existentes.</p>
+      <!-- Aquí puedes agregar tu formulario de búsqueda -->
+    </div>
+    <div id="contenido-listado" style="display:none;">
+      <h2>Listado de Profesores</h2>
+      <p>Aquí se muestra el listado de profesores.</p>
+      <!-- Aquí puedes agregar tu tabla/listado -->
+    </div>
+    <div id="contenido-otro" style="display:none;">
+      <h2>Otra opción</h2>
+      <p>Contenido para otra opción.</p>
+    </div>
+
   </div>
 
   <!-- Bootstrap JS Bundle -->
   <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
   <!-- Scripts propios -->
-  <!--script src="../js/scripts.js"></script-->
+  <script src="../js/cliente.js"></script>
   <!--script src="../js/auth.js"></script-->
 </body>
 </html>
