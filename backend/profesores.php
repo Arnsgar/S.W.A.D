@@ -3,6 +3,10 @@ include "bd.php";
 
 
 session_start();
+if (!isset($_SESSION['docente_id'])) {
+    header('Location: login.php');
+    exit();
+}
 header("Content-Type: application/json");
 
 $response = ["success" => false, "message" => ""];

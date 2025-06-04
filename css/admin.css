@@ -1,78 +1,146 @@
+/* ======= Mensajes de error ======= */
 .error {
   color: red;
   font-size: 0.85em;
-  margin-top: -10px;   /* Súbelo más cerca del input */
+  margin-top: -10px;
   display: block;
 }
 
-/* Estilos generales para el panel de administración */
+/* ======= Estilos generales ======= */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   background: #f4f4f4;
   margin: 0;
   padding: 0;
 }
 
-/* Contenedor principal con sidebar y contenido */
+/* ======= Contenedor principal ======= */
 .admin-container {
   display: flex;
 }
 
-/* Sidebar: menú lateral */
+/* ======= Sidebar ======= */
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 250px;
-  background: #333;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
   color: white;
-  padding: 20px;
-  height: calc(100vh - 70px); /* Ajustar según la altura del navbar */
+  overflow-x: hidden;
+  transition: width 0.3s ease;
+  z-index: 1030;
 }
 
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 20px;
+.sidebar.collapsed {
+  width: 70px;
 }
 
+/* Video de fondo */
+.sidebar video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  object-fit: cover;
+  opacity: 0.15;
+  z-index: -1;
+}
+
+/* Lista de navegación */
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin-top: 80px;
 }
 
 .sidebar ul li {
-  margin: 15px 0;
+  margin: 10px 0;
 }
 
 .sidebar ul li a {
-  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
   color: white;
-  display: block;
-  padding: 10px;
-  transition: background 0.3s;
+  text-decoration: none;
+  transition: background 0.3s ease;
 }
 
 .sidebar ul li a:hover {
-  background: #444;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Área de contenido principal */
+/* Ícono */
+.sidebar i {
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+/* Ocultar texto al colapsar */
+.sidebar.collapsed ul li a span {
+  display: none;
+}
+
+/* Centrar íconos al colapsar */
+.sidebar.collapsed ul li a {
+  justify-content: center;
+}
+
+/* ======= Botón para colapsar sidebar ======= */
+/* Botón para colapsar */
+.toggle-btn {
+  position: fixed;
+  top: 70px;
+  /* debajo de la navbar */
+  left: 260px;
+  background: #000;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+  z-index: 1060;
+  border: none;
+  transition: left 0.3s ease;
+}
+
+/* Mover botón cuando sidebar está colapsada */
+.sidebar.collapsed+.toggle-btn {
+  left: 80px;
+}
+
+/* ======= Área de contenido ======= */
 .content {
-  flex: 1;
-  padding: 20px;
+  margin-left: 250px;
+  padding: 2rem;
+  padding-top: 70px;
+  transition: margin-left 0.3s ease;
 }
 
-/* Tarjetas (cards) */
+.collapsed~.content {
+  margin-left: 70px;
+}
+
+/* ======= Tarjetas (Cards) ======= */
 .card {
   border: none;
   border-radius: 10px;
   margin-bottom: 20px;
   background: white;
-  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Formularios y botones */
-input.form-control, select.form-select {
+/* ======= Formularios ======= */
+input.form-control,
+select.form-select,
+.form-control,
+.form-select {
   margin-bottom: 10px;
+  background-color: #f8f9fa;
 }
 
+/* ======= Botones ======= */
 .btn {
   transition: background-color 0.3s ease;
 }
@@ -81,13 +149,74 @@ input.form-control, select.form-select {
   background-color: #0056b3;
 }
 
-/* Tablas */
+/* ======= Tablas ======= */
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
 
-/* Mensajes de validación */
+/* ======= Mensajes de validación ======= */
 #clienteMsg,
 #plantillaMsg {
   font-weight: bold;
+}
+
+/* ======= Etiquetas (labels) ======= */
+label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+/* ======= Marca Navbar ======= */
+.navbar-brand {
+  font-weight: bold;
+}
+
+nav.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1050;
+  /* mayor que la sidebar */
+}
+
+/* ======= Dropdown flotante personalizado ======= */
+.custom-dropdown {
+  min-width: 180px;
+  padding: 0.5rem 0;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-in-out;
+  font-size: 0.95rem;
+  background-color: white;
+  z-index: 1050;
+}
+
+.custom-dropdown a.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.custom-dropdown a.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.custom-dropdown a.dropdown-item i {
+  font-size: 1rem;
+  margin-right: 8px;
+}
+
+/* ======= Animaciones ======= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
