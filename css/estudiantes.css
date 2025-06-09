@@ -44,3 +44,142 @@ h2, .card-title {
 .card-text {
   font-size: 0.9rem;
 }
+#diploma {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 48px 60px;
+  margin: 60px auto;
+  max-width: 1000px;
+  min-height: 600px;
+  border: 3px solid #000;
+  position: relative;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  overflow: hidden;
+  text-align: center;
+  background-image: linear-gradient(135deg, #fffdf6, #fef8e6);
+}
+
+/* Brillo superior decorativo */
+#diploma::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, #c9a634, transparent);
+  animation: shimmer 3s infinite;
+  z-index: 2;
+}
+
+@keyframes shimmer {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.2; }
+}
+
+#diploma h1 {
+  font-size: 2.2rem;
+  color: #c9a634;
+  font-weight: 900;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 2px #00000020;
+}
+
+#diploma h2 {
+  font-size: 1.3rem;
+  color: #111;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+#diploma .nombre {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+#diploma .texto {
+  font-size: 1.05rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+#diploma .firmas {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+#diploma .firma {
+  text-align: center;
+  width: 200px;
+  border-top: 2px solid #c9a634;
+  padding-top: 10px;
+  font-size: 1rem;
+  color: #000;
+  background: rgba(201, 166, 52, 0.05);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+#diploma .firma img {
+  height: 55px;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 2px 4px rgba(201, 166, 52, 0.4));
+}
+
+#diploma .fecha {
+  color: #444;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-top: 30px;
+}
+
+/* Responsive para móviles y tablets */
+@media (max-width: 1100px) {
+  #diploma {
+    padding: 24px 12px;
+    max-width: 98vw;
+  }
+
+  #diploma .firmas {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  #diploma .firma {
+    width: 90%;
+  }
+}
+@media (max-width: 768px) {
+  #diploma h1 {
+    font-size: 1.8rem;
+  }
+
+  #diploma h2 {
+    font-size: 1.1rem;
+  }
+
+  #diploma .nombre {
+    font-size: 1.5rem;
+  }
+
+  #diploma .texto {
+    font-size: 0.95rem;
+  }
+
+  #diploma .firma {
+    width: 100%;
+    padding-top: 8px;
+    font-size: 0.9rem;
+  }
+}

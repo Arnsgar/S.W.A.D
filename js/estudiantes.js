@@ -1,23 +1,3 @@
-// Verificar si hay una sesión activa
-
-
-/*
-document.addEventListener("DOMContentLoaded", function () {
-  let user = localStorage.getItem("user");
-  let role = localStorage.getItem("rol"); // Se corrige el nombre de la clave
-
-  console.log("Usuario:", user);
-  console.log("Rol:", role);
-
-  if (!user || role !== "estudiante") {
-      console.warn("Acceso denegado. Redirigiendo a index.html...");
-      window.location.href = "index.html"; // Ajustar ruta si es necesario
-  } else {
-      document.getElementById("nombreEstudiante").innerText = user;
-  }
-});
-*/
-
 
 // Simulación de cursos certificados y progreso
 const cursosCertificados = [
