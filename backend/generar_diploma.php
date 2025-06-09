@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 require('../backend/bd.php');
 require('../backend/generar_diploma/dompdf/autoload.inc.php');
 
@@ -46,6 +47,38 @@ if (count($result) === 0) {
 
 $data = $result[0];
 
+
+// Obtener firmas y nombres
+$stmt = $pdo->prepare("
+    SELECT 
+        d.firma AS firma_docente,
+        i.firma AS firma_instituto,
+        d.nombres AS nombre_docente,
+        i.nombre AS nombre_instituto
+    FROM estudiante e
+    INNER JOIN docente d ON e.id_docente = d.id_docente
+    INNER JOIN instituto i ON d.id_instituto = i.id_instituto
+    WHERE e.id_estudiante = ?
+    LIMIT 1
+");
+$stmt->execute([$id_estudiante]);
+$firmas = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$root = $_SERVER['DOCUMENT_ROOT'];
+$base = '/S.W.A.D/backend/'; // Ahora incluye /backend/
+
+$firma_docente = $firmas['firma_docente'] ? $root . $base . $firmas['firma_docente'] : '';
+$firma_instituto = $firmas['firma_instituto'] ? $root . $base . $firmas['firma_instituto'] : '';
+$nombre_docente = $firmas['nombre_docente'] ?? 'Docente';
+$nombre_instituto = $firmas['nombre_instituto'] ?? 'Rector';
+
+file_put_contents('debug_ruta_firma.txt', $firma_docente . PHP_EOL . $firma_instituto);
+if (!file_exists($firma_docente)) {
+    file_put_contents('debug_ruta_firma.txt', "NO EXISTE: $firma_docente" . PHP_EOL, FILE_APPEND);
+}
+if (!file_exists($firma_instituto)) {
+    file_put_contents('debug_ruta_firma.txt', "NO EXISTE: $firma_instituto" . PHP_EOL, FILE_APPEND);
+}
 // Generar el contenido del diploma directamente
 $html = "<!DOCTYPE html>
 <html lang='es'>
@@ -119,6 +152,7 @@ $html = "<!DOCTYPE html>
   </style>
 </head>
 <body>
+
   <div class='certificado'>
     <div class='decoracion'><i class='fas fa-certificate'></i></div>
     <div class='logo'><img src='../img/logo2.png' alt='Logo Institución'></div>
@@ -141,10 +175,19 @@ $html = "<!DOCTYPE html>
       </div>
     </div>
 
-    <div class='firmas'>
-      <div class='firma'>Director Académico</div>
+       <div class='firmas'>
+      <div class='firma'>
+        <img src='" . htmlspecialchars($firma_instituto) . "' alt='Firma Rector' style='height:60px;'><br>
+        " . htmlspecialchars($nombre_instituto) . "<br>
+        Rector
+      </div>
+      <div class='firma'>
+        <img src='" . htmlspecialchars($firma_docente) . "' alt='Firma Docente' style='height:60px;'><br>
+        " . htmlspecialchars($nombre_docente) . "<br>
+        Docente
+      </div>
       <div class='firma'>Fecha: " . date("d \d\e F \d\e Y") . "</div>
-    </div>
+<img src='C:/xampp/htdocs/S.W.A.D/prueba.jpg' style='height:60px;'>    </div>
 
     <div class='text-center mt-4'>
       <a href='../backend/generar_diploma.php?download=true' class='btn btn-outline-primary'>Descargar Diploma en PDF</a>

@@ -51,8 +51,8 @@
             <i class="bi bi-printer icon-dashboard"></i>
             <h5 class="card-title mt-2">Imprimir Diploma</h5>
             <p class="card-text">Imprime tu diploma de certificación.</p>
-            <a href="../backend/generar_diploma.php" class="btn btn-outline-warning">Ir</a>
-          </div>
+              <button class="btn btn-outline-warning" onclick="descargarPDF()">Descargar</button>
+            </div>
         </div>
       </div>
       <!-- Tarjeta: Ver Cursos Certificados -->
@@ -110,5 +110,88 @@
       }
     }
   </script>
+<div id="diploma" style="background: #fff; padding: 40px; max-width: 800px; margin: auto; display: none;">
+  <h1>Diploma de Certificación</h1>
+  <h2>Otorgado a</h2>
+  <div class="nombre"></div>
+  <div class="texto">
+    En reconocimiento por haber completado exitosamente el programa <strong class="programa"></strong>, demostrando excelencia y compromiso académico.
+  </div>
+  <div class="texto">
+    Estado del Programa: <strong class="estado"></strong>
+  </div>
+  <div class="texto">
+    Total de Módulos: <strong class="total_modulos"></strong>
+  </div>
+  <div class="texto">
+    Módulos Cursados: <strong class="modulos_cursados"></strong>
+  </div>
+  <div class="firmas" style="display: flex; justify-content: space-between; margin-top: 60px;">
+    <div class="firma" style="text-align: center;">
+      <img class="firma_instituto" src="" style="height:60px;"><br>
+      <span class="nombre_instituto"></span><br>
+      Rector
+    </div>
+    <div class="firma" style="text-align: center;">
+      <img class="firma_docente" src="" style="height:60px;"><br>
+      <span class="nombre_docente"></span><br>
+      Docente
+    </div>
+    <div class="firma" style="text-align: center;">
+      Fecha: <span class="fecha"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('../backend/datos_diploma.php')
+    .then(res => res.json())
+    .then(json => {
+      if (json.success) {
+        const d = json.data;
+        const f = json.firmas;
+        document.querySelector('#diploma .nombre').textContent = d.nombre;
+        document.querySelector('#diploma .programa').textContent = d.programa;
+        document.querySelector('#diploma .estado').textContent = d.estado;
+        document.querySelector('#diploma .total_modulos').textContent = d.total_modulos;
+        document.querySelector('#diploma .modulos_cursados').textContent = d.modulos_cursados;
+       document.querySelector('#diploma .firma_instituto').src = '../backend/' + f.firma_instituto;
+       document.querySelector('#diploma .firma_docente').src = '../backend/' + f.firma_docente;
+       document.querySelector('#diploma .nombre_instituto').textContent = f.nombre_instituto;
+        document.querySelector('#diploma .nombre_docente').textContent = f.nombre_docente;
+        document.querySelector('#diploma .fecha').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+      }
+    });
+});
+</script>
+
+<script>
+function descargarPDF() {
+  // Mostrar el diploma temporalmente si está oculto
+  const diploma = document.getElementById('diploma');
+  const prevDisplay = diploma.style.display;
+  diploma.style.display = 'block';
+
+  html2canvas(diploma, { scale: 2 }).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new window.jspdf.jsPDF({
+     orientation: 'landscape', 
+      unit: 'pt',
+      format: 'a4'
+    });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pageWidth;
+    const imgWidth = pageWidth;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    pdf.save('Diploma.pdf');
+    // Vuelve a ocultar el diploma si estaba oculto
+    diploma.style.display = prevDisplay;
+  });
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
