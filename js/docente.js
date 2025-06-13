@@ -1,363 +1,220 @@
-// Verificar si el usuario tiene sesión activa y es docente
-document.addEventListener("DOMContentLoaded", function () {
- 
-  cargarEstudiantes(); // Cargar estudiantes al inicio
-});
-
-// Manejo de secciones
-function mostrarSeccion(id) {
-  document.querySelectorAll(".seccion").forEach(seccion => {
-    seccion.style.display = "none";
-  });
-  document.getElementById(id).style.display = "block";
-  if (id === "notas") {
-    cargarEstudiantesNotas();
-  }
-}
-
-// Agregar estudiante a la lista
-function agregarEstudiante(event) {
-  event.preventDefault();
-  // Obtener valores del formulario
-  const nombre = document.getElementById("nombre").value;
-  const apellido = document.getElementById("apellido").value;
-  const id_tipodoc = document.getElementById("id_tipodoc").value;
-  const num_documento = document.getElementById("num_documento").value;
-  const sexo_nacimiento = document.getElementById("sexo_nacimiento").value;
-  const fecha_nacimiento = document.getElementById("fecha_nacimiento").value;
-  const nacionalidad = document.getElementById("nacionalidad").value;
-  const departamento = document.getElementById("departamento").value;
-  const municipio = document.getElementById("municipio").value;
-  const direccion_residencia = document.getElementById("direccion_residencia").value;
-  const correo = document.getElementById("correo").value;
-  const telefono = document.getElementById("telefono").value;
-  const usuario = document.getElementById("usuario").value;
-  const contrasena = document.getElementById("contrasena").value;
-  const nivel_estudios = document.getElementById("nivel_estudios").value;
-  const institucion_procedencia = document.getElementById("institucion_procedencia").value;
-  const año_graduacion = document.getElementById("año_graduacion").value;
-  const id_programa = document.getElementById("id_programa").value;
-
-
-
-  // Enviar datos al backend
-  fetch('../backend/registrar_estudiante.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      nombre,
-      apellido,
-      id_tipodoc,
-      num_documento,
-      sexo_nacimiento,
-      fecha_nacimiento,
-      nacionalidad,
-      departamento,
-      municipio,
-      direccion_residencia,
-      correo,
-      telefono,
-      usuario,
-      contrasena,
-      nivel_estudios,
-      institucion_procedencia,
-      año_graduacion,
-      id_programa
-
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      cargarEstudiantes(); // Recargar la lista de estudiantes
-      // Mostrar los datos en la lista solo si el registro fue exitoso
-      const lista = document.getElementById("listaEstudiantes");
-      const estudiante = document.createElement("div");
-      estudiante.className = "alert alert-secondary mt-2";
-      estudiante.innerHTML = `<b>${nombre} ${apellido}</b> | Documento: ${num_documento} | Sexo: ${sexo_nacimiento} | Nacimiento: ${fecha_nacimiento} | Nacionalidad: ${nacionalidad} | Departamento: ${departamento} | Municipio: ${municipio} | Dirección: ${direccion_residencia} | Correo: ${correo} | Teléfono: ${telefono} | Usuario: ${usuario} | Nivel: ${nivel_estudios} | Institución: ${institucion_procedencia} | Año: ${año_graduacion} | Programa: ${id_programa}`;
-      lista.appendChild(estudiante);
-      document.getElementById("formEstudiante").reset();
-      alert('Estudiante registrado correctamente');
-    } else {
-      alert('Error: ' + data.message);
-    }
-  })
-  .catch(err => {
-    alert('Error de conexión con el servidor');
-  });
-}
-
-
-// Evento para agregar estudiantes al formulario
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("formEstudiante").addEventListener("submit", agregarEstudiante);
-});
+  let estudiantes = [];
 
+  const formEstudiante = document.getElementById("formEstudiante");
+  const listaEstudiantes = document.getElementById("listaEstudiantes");
+  const progresoContainer = document.getElementById("progresoContainer");
+  const listaEstudiantesNotas = document.getElementById("listaEstudiantesNotas");
 
-  // Puedes poner este script al final de tu archivo HTML o en tu archivo JS principal
-function cargarEstudiantes() {
-  fetch('../backend/obtener_estudiantes.php')
-    .then(response => response.json())
-    .then(result => {
-      const select = document.getElementById('estudiantesDirec');
-      select.innerHTML = '<option value="">Seleccione un estudiante</option>';
-      if (result.success && Array.isArray(result.data)) {
-        result.data.forEach(est => {
-          const option = document.createElement('option');
-          option.value = est.id_estudiante;
-          option.setAttribute('data-id_programa', est.id_programa);
-          option.textContent = est.nombre + ' ' + est.apellido + '\u00A0\u00A0\u00A0'+'Programa: ' + est.programa;
-          select.appendChild(option);
+  // -----------------------------
+  // Cargar estudiantes desde PHP
+  // -----------------------------
+  async function cargarEstudiantes() {
+    try {
+      const res = await fetch("php/listar_estudiantes.php");
+      const data = await res.json();
+      estudiantes = data;
+      renderEstudiantes();
+      renderNotas();
+    } catch (err) {
+      console.error("Error al cargar estudiantes", err);
+    }
+  }
+
+  // -----------------------------
+  // Escuchar clicks de edición
+  // -----------------------------
+  document.addEventListener("click", function (e) {
+    // Editar
+    if (e.target && e.target.classList.contains("btn-editar")) {
+      const fila = e.target.closest("tr");
+      const id = fila.dataset.id;
+      const nombre = fila.children[0].textContent;
+      const tipoDocumento = fila.children[1].textContent;
+      const numeroDocumento = fila.children[2].textContent;
+      const fechaNacimiento = fila.children[3].textContent;
+      const correo = fila.children[4].textContent;
+      const programa = fila.children[5].textContent;
+
+      document.getElementById("nombre_est").value = nombre;
+      document.getElementById("tipo_doc").value = tipoDocumento;
+      document.getElementById("num_doc").value = numeroDocumento;
+      document.getElementById("fecha_nac").value = fechaNacimiento;
+      document.getElementById("correo").value = correo;
+      document.getElementById("programa").value = programa;
+
+      document.getElementById("form-estudiante").dataset.editandoId = id;
+      document.getElementById("form-estudiante").style.display = "block";
+    }
+
+    // Eliminar
+    if (e.target && e.target.classList.contains("btn-eliminar")) {
+      const fila = e.target.closest("tr");
+      const id = fila.dataset.id;
+
+      if (confirm("¿Estás seguro de que deseas eliminar este estudiante?")) {
+        fetch("php/eliminar_estudiante.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "id=" + encodeURIComponent(id),
+        })
+        .then(res => res.text())
+        .then(data => {
+          alert(data);
+          cargarEstudiantes(); // Refrescar la lista
         });
-      } else {
-        select.innerHTML = '<option value="">No hay estudiantes</option>';
       }
-    })
-    .catch(() => {
-      const select = document.getElementById('estudiantesDirec');
-      select.innerHTML = '<option value="">Error al cargar</option>';
-    });
+    }
+  });
 
+  // -----------------------------------------
+  // Registrar estudiante (formulario nuevo)
+  // -----------------------------------------
+  formEstudiante?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = {
+      nombre: document.getElementById("nombre").value,
+      apellido: document.getElementById("apellido").value,
+      correo: document.getElementById("correo").value,
+      curso: document.getElementById("curso")?.value || "",
+      paralelo: document.getElementById("paralelo")?.value || ""
+    };
 
+    try {
+      const res = await fetch("../backend/registrar_estudiante.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      if (json.success && json.id_estudiante) {
+        estudiantes.push({ id: json.id_estudiante, ...data, modulos: [] });
+        renderEstudiantes();
+        renderNotas();
+        formEstudiante.reset();
+      } else {
+        alert(json.message || "Error al registrar estudiante");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error de conexión al registrar");
+    }
+  });
+
+  // -----------------------------------------
+  // Renderizar lista de estudiantes
+  // -----------------------------------------
+  function renderEstudiantes() {
+    listaEstudiantes.innerHTML = "";
+    if (estudiantes.length === 0) {
+      listaEstudiantes.innerHTML = "<p>No hay estudiantes registrados.</p>";
+      return;
+    }
+    const table = document.createElement("table");
+    table.className = "table table-bordered table-hover mt-3";
+    table.innerHTML = `
+      <thead class="table-dark"><tr>
+        <th>Nombre</th><th>Correo</th><th>Curso</th><th>Paralelo</th><th>Acciones</th>
+      </tr></thead><tbody>
+      ${estudiantes.map(est => `
+        <tr data-id="${est.id}">
+          <td>${est.nombre} ${est.apellido}</td>
+          <td>${est.correo}</td>
+          <td>${est.curso}</td>
+          <td>${est.paralelo}</td>
+          <td>
+            <button class="btn btn-sm btn-primary btn-editar">Editar</button>
+            <button class="btn btn-sm btn-danger btn-eliminar">Eliminar</button>
+          </td>
+        </tr>`).join("")}
+      </tbody>`;
+    listaEstudiantes.appendChild(table);
+  }
+
+  // -----------------------------------------
+  // Mostrar progreso
+  // -----------------------------------------
+  window.mostrarProgreso = function (id) {
+    const est = estudiantes.find(e => e.id === id);
+    if (!est) return;
+    document.querySelector('[data-section="progresoEstudiantes"]')?.click();
+    progresoContainer.innerHTML = `<h4>${est.nombre} ${est.apellido}</h4><p>Progreso cargado desde base de datos.</p>`;
   };
 
-const select = document.getElementById('estudiantesDirec');
-
-select.addEventListener('change', function () {
-  const selectedOption = select.options[select.selectedIndex];
-  const id_programa = selectedOption.getAttribute('data-id_programa');
-
-  if (id_programa) {
-    consultarDirectrices(id_programa); // Llama la función que ya configuraste
-  }
-});
-/*
-// mostrar las directrices actuales del estudiante
-  function consultarDirectrices(id_programa){
-
-    fetch(`../backend/directrices_actuales.php?   id_programa=${encodeURIComponent(id_programa)}`)
-    .then(response => response.json())
-    .then(result => {
-      const tbody = document.querySelector('#tablaDirectrices tbody');
-      tbody.innerHTML = ''; // Limpiar tabla
-
-      if (result.success && Array.isArray(result.data)) {
-        result.data.forEach(est => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${est.id_modulo}</td>
-            <td>${est.nombre}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      } else {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td colspan="3" class="text-center">No hay estudiantes disponibles</td>`;
-        tbody.appendChild(row);
-      }
-    })
-    .catch(() => {
-      const tbody = document.querySelector('#tablaEstudiantes tbody');
-      tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Error al cargar los estudiantes</td></tr>`;
+  // -----------------------------------------
+  // Renderizar tarjetas de notas
+  // -----------------------------------------
+  function renderNotas() {
+    listaEstudiantesNotas.innerHTML = "";
+    if (estudiantes.length === 0) {
+      listaEstudiantesNotas.innerHTML = "<p>No hay estudiantes disponibles para notas.</p>";
+      return;
+    }
+    estudiantes.forEach(est => {
+      const card = document.createElement("div");
+      card.className = "card mb-3";
+      card.innerHTML = `
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5>${est.nombre} ${est.apellido}</h5>
+            <p class="text-muted">${est.curso} - ${est.paralelo}</p>
+          </div>
+          <div>
+            <button class="btn btn-primary me-2" onclick="editarNotas(${est.id})">
+              <i class="fas fa-pen"></i> Editar Notas
+            </button>
+            <button class="btn btn-warning me-2" onclick="abrirCitacion(${est.id})">
+              <i class="fas fa-user-clock"></i> Citar
+            </button>
+            <button class="btn btn-info" onclick="abrirObservacion(${est.id})">
+              <i class="fas fa-comment"></i> Observar
+            </button>
+          </div>
+        </div>`;
+      listaEstudiantesNotas.appendChild(card);
     });
-
-
-
   }
 
-// Manejo de búsqueda de profesores unificada
-document.getElementById('form-buscar-profesor').addEventListener('submit', function(e) {
-  e.preventDefault();
+  // -----------------------------------------
+  // Funciones auxiliares para observación/citación
+  // -----------------------------------------
+  window.editarNotas = function (id) {
+    alert(`Editar notas para estudiante ${id}`);
+  };
 
-  const busqueda = document.getElementById('busqueda').value.trim();
+  window.abrirCitacion = async function (id_estudiante) {
+    const motivo = prompt("Motivo de la citación:");
+    if (!motivo) return;
+    alert(`Citación creada para estudiante ${id_estudiante}`);
+  };
 
-  const resultadosDiv = document.getElementById('resultados');
-  resultadosDiv.innerHTML = '<div class="alert alert-info">Buscando...</div>';
+  window.abrirObservacion = async function (id_estudiante) {
+    const obs = prompt("Observación:");
+    if (!obs) return;
+    alert(`Observación registrada para estudiante ${id_estudiante}`);
+  };
 
-  fetch(`../backend/buscar_profesor.php?busqueda=${encodeURIComponent(busqueda)}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Error en la respuesta del servidor');
-      }
-      return response.json();
-    })
-    .then(data => {
-      resultadosDiv.innerHTML = '';
-
-      // Actualizar la lógica para mostrar todos los campos relevantes en los resultados
-      if (data.length > 0) {
-        const table = document.createElement('table');
-        table.className = 'table table-bordered table-hover';
-        table.innerHTML = `
-          <thead class="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Nombres</th>
-              <th>Apellidos</th>
-              <th>Tipo Documento</th>
-              <th>Número Documento</th>
-              <th>Correo</th>
-              <th>Teléfono</th>
-              <th>Usuario</th>
-              <th>Fecha Registro</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${data.map(profesor => `
-              <tr>
-                <td>${profesor.id_docente}</td>
-                <td>${profesor.nombres}</td>
-                <td>${profesor.apellidos}</td>
-                <td>${profesor.id_tipodoc}</td>
-                <td>${profesor.num_documento}</td>
-                <td>${profesor.correo}</td>
-                <td>${profesor.telefono}</td>
-                <td>${profesor.usuario}</td>
-                <td>${profesor.fecha_registro}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        `;
-        resultadosDiv.appendChild(table);
-      } else {
-        resultadosDiv.innerHTML = '<div class="alert alert-warning">No se encontraron resultados.</div>';
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      resultadosDiv.innerHTML = '<div class="alert alert-danger">Ocurrió un error al realizar la búsqueda. Intente nuevamente.</div>';
+  // -----------------------------------------
+  // Navegación entre secciones
+  // -----------------------------------------
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = this.getAttribute('data-section');
+      document.querySelectorAll('.seccion').forEach(sec => sec.classList.add('d-none'));
+      document.getElementById(target)?.classList.remove('d-none');
+      document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+      this.classList.add('active');
     });
-});
-
-
-*/
-
-
-
-//Carga de estudiantes por programa
-function cargarEstudiantesNotas() {
-  fetch('../backend/listar_estudiantes.php', { credentials: 'include' })
-    .then(res => res.json())
-    .then(data => {
-      const contenedor = document.getElementById('listaEstudiantesNotas');
-      if (!data.success) {
-        contenedor.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
-        return;
-      }
-      if (!Array.isArray(data.data) || data.data.length === 0) {
-        contenedor.innerHTML = `<div class="alert alert-info">No hay estudiantes inscritos.</div>`;
-        return;
-      }
-      let html = `<table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Cédula</th>
-            <th>Programa</th>
-          </tr>
-        </thead>
-        <tbody>
-      `;
-      data.data.forEach(est => {
-        html += `
-          <tr class="fila-estudiante" style="cursor:pointer" data-id="${est.id_estudiante}" data-nombre="${est.nombre}" data-apellido="${est.apellido}" data-cedula="${est.cedula}">
-      <td>${est.nombre}</td>
-      <td>${est.apellido}</td>
-      <td>${est.cedula}</td>
-      <td>${est.programa}</td>
-    </tr>
-        `;
-      });
-      html += '</tbody></table>';
-      contenedor.innerHTML = html;
-      // Después de contenedor.innerHTML = html;
-document.querySelectorAll('.fila-estudiante').forEach(fila => {
-  fila.addEventListener('click', function() {
-    const id = this.dataset.id;
-    const nombre = this.dataset.nombre + ' ' + this.dataset.apellido;
-    document.getElementById('modalEstudianteId').value = id;
-    document.getElementById('modalEstudianteNombre').value = nombre;
-
-    // Limpiar la lista de módulos antes de cargar
-    document.getElementById('listaModulosEstudiante').innerHTML = 'Cargando módulos...';
-
-    // Fetch para obtener los módulos del estudiante
-    fetch(`../backend/listar_modulos_estudiante.php?id_estudiante=${encodeURIComponent(id)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-          let lista = '<ul class="list-group">';
-
-         data.data.forEach(mod => {
-  lista += `<li class="list-group-item d-flex align-items-center justify-content-between">
-    <div>
-      ${mod.modulo} <span class="text-muted">(${mod.programa})</span>
-    </div>
-    <div class="d-flex align-items-center">
-      <input type="number" min="0" max="5" step="0.01" class="form-control form-control-sm me-2 input-nota" 
-        value="${mod.calificacion !== null ? mod.calificacion : ''}" 
-        data-id_modulo="${mod.id_modulo}" style="width:80px;">
-      <button class="btn btn-success btn-sm btn-guardar-nota" 
-        data-id_modulo="${mod.id_modulo}">Guardar</button>
-    </div>
-  </li>`;
-});
-          lista += '</ul>';
-          document.getElementById('listaModulosEstudiante').innerHTML = lista;
-          
-    // === PASO 2: Agrega aquí el evento para guardar nota ===
-    document.querySelectorAll('.btn-guardar-nota').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const id_modulo = this.dataset.id_modulo;
-        const id_estudiante = document.getElementById('modalEstudianteId').value;
-        const input = this.closest('li').querySelector('.input-nota');
-        const nota = input.value;
-
-        fetch('../backend/guardar_nota.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id_estudiante, id_modulo, nota })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            this.classList.remove('btn-success');
-            this.classList.add('btn-secondary');
-            this.textContent = 'Guardado';
-            setTimeout(() => {
-              this.classList.remove('btn-secondary');
-              this.classList.add('btn-success');
-              this.textContent = 'Guardar';
-            }, 1200);
-          } else {
-            alert('Error: ' + data.message);
-          }
-        })
-        .catch(() => {
-          alert('Error al guardar la nota');
-        });
-      });
-    });
-    // === FIN PASO 2 ===
-        } else {
-          document.getElementById('listaModulosEstudiante').innerHTML = '<div class="alert alert-info">No tiene módulos asignados.</div>';
-        }
-      })
-      .catch(() => {
-        document.getElementById('listaModulosEstudiante').innerHTML = '<div class="alert alert-danger">Error al cargar módulos.</div>';
-      });
-
-    const modal = new bootstrap.Modal(document.getElementById('modalNota'));
-    modal.show();
   });
+
+  const primera = document.querySelector('.nav-link[data-section]');
+  if (primera) {
+    primera.classList.add('active');
+    document.getElementById(primera.getAttribute('data-section')).classList.remove('d-none');
+  }
+
+  cargarEstudiantes(); // Inicial
 });
-    })
-    .catch(err => {
-      document.getElementById('listaEstudiantesNotas').innerHTML = `<div class="alert alert-danger">Error al cargar estudiantes</div>`;
-    });
-}
-
-
